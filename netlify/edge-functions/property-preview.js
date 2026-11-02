@@ -113,4 +113,4 @@ export default async (request, context) => {
     return await upstream;
   }
 };
-export const config={path:'/',method:['GET','HEAD']};
+export const config={path:'/',method:['GET']};
