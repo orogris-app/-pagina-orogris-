@@ -1,0 +1,33 @@
+OROGRIS 4.9 — FOTOGRAFIA, PRECIO Y DESCRIPCION EN LA VISTA PREVIA DE WHATSAPP BUSINESS
+
+QUE SE CAMBIO:
+- Cada enlace publico de un inmueble tiene metadatos de la foto principal, el precio y una descripcion corta.
+- Funciona tanto con fichas normales (OROGRIS) como fichas neutrales para colegas (sin marca).
+- El boton Estado WhatsApp conserva el menu Compartir de iPhone y usa una URL de vista previa renovada.
+- No se modifican ni eliminan propiedades, fotos, usuarios o datos de Supabase.
+
+IMPORTANTE — NO ARRASTRES ESTA CARPETA A NETLIFY DROP.
+La miniatura de WhatsApp depende de una Edge Function en netlify/edge-functions/.
+Netlify publica estas funciones mediante Git o Netlify CLI, no con el arrastre habitual.
+
+FORMA DE PUBLICAR EN EL MISMO SITIO DESDE WINDOWS (requiere Node.js):
+1. Descarga y descomprime el ZIP.
+2. Abre PowerShell en la carpeta descomprimida (donde esta netlify.toml).
+3. Ejecuta estos comandos en orden:
+   npx netlify-cli login
+   npx netlify-cli link
+   npx netlify-cli deploy --prod --dir=public --no-build
+4. En el paso link, ELIGE el sitio EXISTENTE eclectic-hamster-db58dc, no crear otro.
+5. Antes de publicar, confirma que el enlace del deploy apunta a ese mismo sitio.
+6. Comparte un Estado WhatsApp desde tu iPhone, usando el boton Estado WhatsApp.
+
+Nota: si no tienes Node.js, se instala desde https://nodejs.org/.
+WhatsApp puede almacenar temporalmente miniaturas; los estados incluyen pv=49 para refrescar el enlace cuando la propiedad cambia.
+WhatsApp decide cuanto texto mostrar. Nunca se garantiza el numero de lineas de descripcion.
+
+COMPROBACION DESPUES DE DESPLEGAR:
+Abre un enlace ?p=UUID&v=brand&pv=49 en navegador, luego usa Ver codigo fuente
+(o verifica con un depurador de Open Graph), y busca og:image, og:title y og:description.
+Si aparecen, Netlify ya entrega los metadatos y WhatsApp debe poder leerlos.
+
+ATENCION: NO publiques el archivo SQL ni ninguna clave secreta. config.js contiene solo la clave publica de Supabase.
