@@ -1,7 +1,7 @@
 'use strict';
 // OROGRIS V6: módulos independientes. Sin dependencias ni servicios de pago.
 let v6Rentals=[],v6Reservations=[],v6Payments=[],v6Vehicles=[],v6Visits=[];
-let v6PublicRentals=[],v6PublicVehicles=[],v6Unavailable=[];
+let v6RentalData=[],v6VehicleData=[],v6Unavailable=[];
 let v6RentalEditing='',v6VehicleEditing='',v6Loaded={},v6LoadError='',v6Loading=false;
 const v6Date=s=>s?String(s).slice(0,10):'';
 function v6Money(n){return n===null||n===undefined||n===''?'Por consultar':fmt(n)}
@@ -68,7 +68,7 @@ function v6PublicRentalCard(r){
 async function v6PublicRentals(){
  document.title='OROGRIS | Arriendos';
  $('#shell').innerHTML=v6PublicWrap('Arriendos y estadías','Casas, apartamentos y propiedades para días, fines de semana o meses. Las fechas se confirman personalmente.','<section class="catalogue-grid" id="v6RentalCards"><div class="empty">Cargando arriendos...</div></section><div id="v6BookingArea"></div>');
- try{v6PublicRentals=await v6PublicRequest('/rest/v1/rpc/og_public_rentals',{method:'POST',body:'{}'});$('#v6RentalCards').innerHTML=v6PublicRentals.length?v6PublicRentals.map(v6PublicRentalCard).join(''):'<p class="muted">Aún no tenemos propiedades publicadas para renta.</p>';if(v6PublicRentals[0])v6TrackVisit('arriendos',null,v6PublicRentals[0].owner_id)}
+ try{v6RentalData=await v6PublicRequest('/rest/v1/rpc/og_public_rentals',{method:'POST',body:'{}'});$('#v6RentalCards').innerHTML=v6RentalData.length?v6RentalData.map(v6PublicRentalCard).join(''):'<p class="muted">Aún no tenemos propiedades publicadas para renta.</p>';if(v6RentalData[0])v6TrackVisit('arriendos',null,v6RentalData[0].owner_id)}
  catch(e){$('#v6RentalCards').innerHTML='<div class="tip info">La sección de arriendos está en preparación. Pronto publicaremos propiedades disponibles.</div>'}
 }
 function v6BookingForm(r){
@@ -81,7 +81,7 @@ function v6PublicVehicleCard(v){
 async function v6PublicVehicles(){
  document.title='OROGRIS | Vehículos';
  $('#shell').innerHTML=v6PublicWrap('Vehículos en venta','Encuentra vehículos disponibles y conversa con Orogris por WhatsApp.','<section class="catalogue-grid" id="v6VehicleCards"><div class="empty">Cargando vehículos...</div></section>');
- try{v6PublicVehicles=await v6PublicRequest('/rest/v1/rpc/og_public_vehicles',{method:'POST',body:'{}'});$('#v6VehicleCards').innerHTML=v6PublicVehicles.length?v6PublicVehicles.map(v6PublicVehicleCard).join(''):'<p class="muted">Pronto publicaremos vehículos disponibles.</p>'; const owner=publicProperties?.[0]?.owner_id; if(owner)v6TrackVisit('vehiculos',null,owner)}
+ try{v6VehicleData=await v6PublicRequest('/rest/v1/rpc/og_public_vehicles',{method:'POST',body:'{}'});$('#v6VehicleCards').innerHTML=v6VehicleData.length?v6VehicleData.map(v6PublicVehicleCard).join(''):'<p class="muted">Pronto publicaremos vehículos disponibles.</p>'; const owner=publicProperties?.[0]?.owner_id; if(owner)v6TrackVisit('vehiculos',null,owner)}
  catch{$('#v6VehicleCards').innerHTML='<div class="tip info">La sección de vehículos está en preparación.</div>'}
 }
 async function v6PublicMortgages(){
@@ -124,7 +124,7 @@ async function v6SubmitVehicle(e){
 }
 async function v6SubmitBooking(e){
  e.preventDefault();
- const r=v6PublicRentals.find(x=>x.id===$('#v6BookingRental').value);
+ const r=v6RentalData.find(x=>x.id===$('#v6BookingRental').value);
  const from=$('#v6CheckIn').value,to=$('#v6CheckOut').value,name=$('#v6GuestName').value.trim(),phone=$('#v6GuestPhone').value.trim();
  if(!r||!from||!to||from>=to||!$('#v6Consent').checked)return toast('Revisa las fechas y la autorización');
  if(!/^[+0-9 ()-]{7,25}$/.test(phone))return toast('Revisa el número de celular');
@@ -148,7 +148,7 @@ document.addEventListener('click',e=>{
  if(target.dataset.v6EditRental){v6RentalEditing=target.dataset.v6EditRental;render();window.scrollTo(0,0)}
  if(target.dataset.v6EditVehicle){v6VehicleEditing=target.dataset.v6EditVehicle;render();window.scrollTo(0,0)}
  if(target.dataset.v6Reservation){v6ChangeReservation(target.dataset.v6Reservation,target.dataset.v6Status)}
- if(target.dataset.v6Request){let r=v6PublicRentals.find(x=>x.id===target.dataset.v6Request);if(r){$('#v6BookingArea').innerHTML=v6BookingForm(r);$('#v6BookingArea').scrollIntoView({behavior:'smooth'})}}
+ if(target.dataset.v6Request){let r=v6RentalData.find(x=>x.id===target.dataset.v6Request);if(r){$('#v6BookingArea').innerHTML=v6BookingForm(r);$('#v6BookingArea').scrollIntoView({behavior:'smooth'})}}
  if(target.dataset.action==='v6closeBooking'){$('#v6BookingArea').innerHTML=''}
  if(target.dataset.action==='v6cancelRental'){v6RentalEditing='';render()}
  if(target.dataset.action==='v6cancelVehicle'){v6VehicleEditing='';render()}
