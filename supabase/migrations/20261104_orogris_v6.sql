@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS public.og_reservations (
 );
 CREATE INDEX IF NOT EXISTS og_reservations_owner_idx ON public.og_reservations(owner_id,check_in);
 CREATE INDEX IF NOT EXISTS og_reservations_dates_idx ON public.og_reservations(rental_id,check_in,check_out);
+CREATE UNIQUE INDEX IF NOT EXISTS og_reservation_duplicate_idx ON public.og_reservations(rental_id,check_in,check_out,guest_phone) WHERE status <> 'cancelada';
 ALTER TABLE public.og_reservations ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS og_reservations_owner_manage ON public.og_reservations;
 CREATE POLICY og_reservations_owner_manage ON public.og_reservations FOR ALL TO authenticated
@@ -139,9 +140,9 @@ CREATE POLICY og_vehicles_owner_manage ON public.og_vehicles FOR ALL TO authenti
  USING (owner_id=auth.uid()) WITH CHECK (owner_id=auth.uid());
 -- Igual que arriendos: la lectura pública de vehículos usa RPC de columnas explícitas.
 CREATE OR REPLACE FUNCTION public.og_public_vehicles()
-RETURNS TABLE(id uuid,title text,brand text,model text,year integer,mileage integer,price numeric,city text,description text,photos jsonb)
+RETURNS TABLE(id uuid,owner_id uuid,title text,brand text,model text,year integer,mileage integer,price numeric,city text,description text,photos jsonb)
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
- SELECT v.id,v.title,v.brand,v.model,v.year,v.mileage,v.price,v.city,v.description,v.photos
+ SELECT v.id,v.owner_id,v.title,v.brand,v.model,v.year,v.mileage,v.price,v.city,v.description,v.photos
  FROM public.og_vehicles v WHERE v.published
 $$;
 REVOKE ALL ON FUNCTION public.og_public_vehicles() FROM PUBLIC;
