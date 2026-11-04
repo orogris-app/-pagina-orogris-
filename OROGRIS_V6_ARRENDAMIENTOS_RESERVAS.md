@@ -28,3 +28,14 @@ Estado: especificación preliminar; no implementado.
 3. Registrar anticipo y saldo pendiente.
 4. Crear arriendo mensual y controlar cobro sin afectar reservas de otras propiedades.
 5. Publicar disponibilidad sin mostrar información privada.
+
+## Flujo de solicitud por WhatsApp (decisión del propietario, 2026-11-04)
+- El visitante selecciona inmueble, fechas de llegada y salida, nombre y teléfono.
+- Al enviar, se crea una solicitud **pendiente** en Supabase y se abre WhatsApp de Orogris (573015904303) con resumen y referencia de la solicitud.
+- La solicitud debe guardarse en la base de datos antes de abrir WhatsApp; contemplar fallos de red y evitar solicitudes duplicadas.
+- El administrador ve solicitudes pendientes, fechas, inmueble y teléfono para llamar al interesado y negociar.
+- Una solicitud pendiente NO bloquea calendario; solo la confirmación manual del administrador bloquea fechas.
+- Estados mínimos: pendiente, confirmada, cancelada. Verificar nuevamente disponibilidad al confirmar para impedir solapamientos.
+- Nunca marcar como confirmada por el simple clic en WhatsApp ni por el envío del formulario.
+- Datos personales protegidos y consentimiento explícito para contacto y tratamiento de datos.
+- Mantener costo adicional objetivo de $0, sujeto a cuotas gratuitas.
