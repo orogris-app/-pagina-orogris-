@@ -1,0 +1,24 @@
+/* Orogris V6.0 - diseño ampliado sin alterar la identidad V5 */
+.v6-publicnav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:17px auto 5px}
+.v6-publicnav a{color:#3e4550;background:#fff;border:1px solid #e6e9ed;border-radius:22px;padding:10px 16px;font-size:13px;font-weight:700;text-decoration:none}
+.v6-publicnav a:hover,.v6-publicnav a:focus-visible{border-color:#caa04d;background:#faf3e2}
+.v6-list{display:grid;gap:10px}
+.v6-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 13px;border:1px solid #e6e9ed;border-radius:12px;background:#fff}
+.v6-item .muted{font-size:12px;line-height:1.65;margin:3px 0}
+.v6-item .quick{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.v6-booking{margin-top:22px;scroll-margin-top:18px}
+.v6-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:15px;font-size:12px;line-height:1.65}
+.v6-check input{margin-top:4px;flex-shrink:0}
+.v6-booking .btn{max-width:100%}
+@media(max-width:760px){
+ .mobilebar{display:flex;overflow-x:auto;gap:0;justify-content:space-around;padding-inline:4px}
+ .mobilebar .nav{flex:1 0 65px;min-width:60px;max-width:92px;padding:9px 4px;font-size:10px;gap:3px;white-space:nowrap;justify-content:center}
+ .mobilebar .nav .svg{height:19px;width:19px}
+ .v6-item{flex-wrap:wrap}
+ .v6-item .quick{width:100%}
+}
+@media(max-width:450px){
+ .v6-publicnav{gap:6px}.v6-publicnav a{padding:9px 11px;font-size:12px}
+ .v6-item .btn{font-size:11px}
+ .v6-booking .two-col{grid-template-columns:1fr}
+}
