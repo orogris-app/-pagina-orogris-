@@ -22,3 +22,12 @@
  .v6-item .btn{font-size:11px}
  .v6-booking .two-col{grid-template-columns:1fr}
 }
+
+.v6-cal-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 0}
+.v6-cal-nav strong{text-transform:capitalize}
+.v6-cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.v6-cal-head{text-align:center;font-weight:750;color:#717986;font-size:11px;padding:5px 0}
+.v6-cal-day,.v6-cal-blank{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:8px;background:#f5f6f8;font-variant-numeric:tabular-nums}
+.v6-cal-occupied{background:#ead4a1;color:#4a3413;font-weight:800;border:1px solid #caa04d}
+.v6-cal-pending{background:#d9dfe6;color:#3e4550;font-weight:700}
+@media(max-width:450px){.v6-cal-day,.v6-cal-blank{min-height:34px;font-size:12px}.v6-cal{gap:3px}}
