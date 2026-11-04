@@ -97,7 +97,7 @@ function v6PublicVehicleCard(v){
 async function v6PublicVehicles(){
  document.title='OROGRIS | Vehículos';
  $('#shell').innerHTML=v6PublicWrap('Vehículos en venta','Encuentra vehículos disponibles y conversa con Orogris por WhatsApp.','<section class="catalogue-grid" id="v6VehicleCards"><div class="empty">Cargando vehículos...</div></section>');
- try{v6VehicleData=await v6PublicRequest('/rest/v1/rpc/og_public_vehicles',{method:'POST',body:'{}'});$('#v6VehicleCards').innerHTML=v6VehicleData.length?v6VehicleData.map(v6PublicVehicleCard).join(''):'<p class="muted">Pronto publicaremos vehículos disponibles.</p>'; const owner=publicProperties?.[0]?.owner_id; if(owner)v6TrackVisit('vehiculos',null,owner)}
+ try{v6VehicleData=await v6PublicRequest('/rest/v1/rpc/og_public_vehicles',{method:'POST',body:'{}'});$('#v6VehicleCards').innerHTML=v6VehicleData.length?v6VehicleData.map(v6PublicVehicleCard).join(''):'<p class="muted">Pronto publicaremos vehículos disponibles.</p>'; const owner=v6VehicleData[0]?.owner_id; if(owner)v6TrackVisit('vehiculos',null,owner)}
  catch{$('#v6VehicleCards').innerHTML='<div class="tip info">La sección de vehículos está en preparación.</div>'}
 }
 async function v6PublicMortgages(){
