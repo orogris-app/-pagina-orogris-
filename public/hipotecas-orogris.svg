@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="1450" viewBox="0 0 960 1450" role="img" aria-labelledby="tit desc">
+<title id="tit">OROGRIS: así funciona la financiación con garantía hipotecaria</title>
+<desc id="desc">Orogris gestiona financiación entre el 30 y 50 por ciento del valor comercial del inmueble, con hipoteca en primer grado, intereses mensuales pactados entre el 1,5 y 2 por ciento según disponibilidad y límites legales, honorarios Orogris del 3 por ciento más IVA y documentación necesaria.</desc>
+<defs>
+<linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffdf9"/><stop offset="1" stop-color="#f2f6f4"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f6d489"/><stop offset="1" stop-color="#bb862c"/></linearGradient>
+<linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#236c47"/><stop offset="1" stop-color="#0f462b"/></linearGradient>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#234633" flood-opacity=".12"/></filter>
+</defs>
+<rect width="960" height="1450" fill="url(#paper)"/>
+<rect width="960" height="205" fill="#101924"/>
+<rect x="36" y="27" width="888" height="152" rx="20" fill="#1b2836" stroke="#a88a4f" stroke-width="2"/>
+<text x="66" y="79" fill="#e7bc69" font-size="44" font-family="Arial,sans-serif" font-weight="800" letter-spacing="-2">OROGRIS</text>
+<text x="67" y="106" fill="#dbe1e4" font-size="16" font-family="Arial,sans-serif" letter-spacing="2">SOLUCIONES INMOBILIARIAS</text>
+<text x="65" y="153" fill="#ffffff" font-size="35" font-family="Arial,sans-serif" font-weight="800">¿Necesitas dinero?</text>
+<text x="566" y="73" fill="#e3cc9e" font-size="20" font-family="Arial,sans-serif" font-weight="700">¡Tu propiedad puede ayudarte!</text>
+<text x="566" y="103" fill="#c8d5d0" font-size="19" font-family="Arial,sans-serif">Te ayudamos a conseguir recursos</text>
+<text x="566" y="129" fill="#c8d5d0" font-size="19" font-family="Arial,sans-serif">con garantía hipotecaria.</text>
+<!-- illustration: house -->
+<g transform="translate(65 232)" stroke-linecap="round" stroke-linejoin="round">
+ <circle cx="116" cy="116" r="109" fill="#e3efe5"/>
+ <path d="M20 121 L116 33 L212 121" fill="none" stroke="#315e44" stroke-width="17"/>
+ <path d="M43 114 V207 H192 V114" fill="#fff9ed" stroke="#315e44" stroke-width="8"/>
+ <path d="M105 207 V139 H146 V207" fill="#dab473" stroke="#315e44" stroke-width="5"/>
+ <rect x="64" y="140" width="30" height="27" rx="3" fill="#b4d9e0" stroke="#315e44" stroke-width="4"/>
+ <rect x="160" y="140" width="25" height="27" rx="3" fill="#b4d9e0" stroke="#315e44" stroke-width="4"/>
+ <circle cx="202" cy="208" r="26" fill="#e7b754"/><circle cx="202" cy="208" r="19" fill="#f7d991"/><text x="190" y="217" font-size="28" font-family="Arial" font-weight="700" fill="#6b4f1a">$</text>
+</g>
+<rect x="324" y="222" width="592" height="222" rx="25" fill="#fff" stroke="#e4e8e1" stroke-width="2" filter="url(#shadow)"/>
+<text x="353" y="261" fill="#173e2d" font-size="24" font-weight="800" font-family="Arial">¿CUÁNTO PUEDES CONSEGUIR?</text>
+<text x="353" y="344" fill="#1f713e" font-size="68" font-weight="900" font-family="Arial">30% – 50%</text>
+<text x="356" y="382" fill="#303e3a" font-size="22" font-family="Arial">del valor comercial de tu inmueble</text>
+<text x="356" y="416" fill="#687673" font-size="17" font-family="Arial">El monto final está sujeto a estudio y disponibilidad.</text>
+<rect x="44" y="468" width="872" height="59" rx="15" fill="#c69c50"/>
+<text x="480" y="508" fill="#15261d" text-anchor="middle" font-size="28" font-weight="800" font-family="Arial">Así de fácil es el proceso</text>
+<!-- steps, 2x2 -->
+<g font-family="Arial,sans-serif">
+<rect x="43" y="550" width="420" height="220" rx="22" fill="#fff" stroke="#e2e6e2" stroke-width="2" filter="url(#shadow)"/>
+<circle cx="87" cy="591" r="29" fill="#18583c"/><text x="87" y="602" text-anchor="middle" font-size="32" font-weight="800" fill="#fff">1</text>
+<text x="129" y="581" fill="#182820" font-size="23" font-weight="800">Cuéntanos sobre tu propiedad</text>
+<text x="129" y="610" fill="#63746b" font-size="18">Revisamos la información básica</text>
+<text x="129" y="634" fill="#63746b" font-size="18">y los documentos del inmueble.</text>
+<!-- clipboard icon -->
+<rect x="63" y="661" width="79" height="85" rx="9" fill="#eaf4ee" stroke="#24734e" stroke-width="4"/>
+<rect x="81" y="650" width="43" height="17" rx="6" fill="#c69c50"/>
+<path d="M82 694 h39 M82 714 h39 M82 733 h26" stroke="#24734e" stroke-width="5" stroke-linecap="round"/>
+<text x="165" y="690" fill="#2b4032" font-size="19">Comenzamos el estudio</text>
+<text x="165" y="717" fill="#2b4032" font-size="19">y la búsqueda del recurso.</text>
+
+<rect x="492" y="550" width="425" height="220" rx="22" fill="#fff" stroke="#e2e6e2" stroke-width="2" filter="url(#shadow)"/>
+<circle cx="537" cy="591" r="29" fill="#18583c"/><text x="537" y="602" text-anchor="middle" font-size="32" font-weight="800" fill="#fff">2</text>
+<text x="578" y="580" fill="#182820" font-size="23" font-weight="800">Hipoteca en primer grado</text>
+<text x="578" y="610" fill="#63746b" font-size="18">Tu inmueble respalda el crédito</text>
+<text x="578" y="634" fill="#63746b" font-size="18">ante el acreedor.</text>
+<!-- key illustration -->
+<circle cx="572" cy="704" r="32" fill="none" stroke="#b48b45" stroke-width="11"/>
+<circle cx="572" cy="704" r="9" fill="#f8f3e7"/>
+<path d="M605 704 h87 v-17 m-23 17 v17" stroke="#b48b45" stroke-width="13" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="715" y="699" fill="#2b4032" font-size="18">Garantía formalizada</text>
+<text x="715" y="726" fill="#2b4032" font-size="18">legalmente.</text>
+
+<rect x="43" y="792" width="420" height="230" rx="22" fill="#fff" stroke="#e2e6e2" stroke-width="2" filter="url(#shadow)"/>
+<circle cx="87" cy="833" r="29" fill="#18583c"/><text x="87" y="844" text-anchor="middle" font-size="32" font-weight="800" fill="#fff">3</text>
+<text x="129" y="824" fill="#182820" font-size="23" font-weight="800">Intereses mensuales</text>
+<text x="129" y="861" fill="#1f713e" font-size="39" font-weight="900">1,5% – 2%</text>
+<text x="129" y="890" fill="#63746b" font-size="18">mensual, según el acuerdo</text>
+<text x="129" y="916" fill="#63746b" font-size="18">con el acreedor y disponibilidad.</text>
+<!-- coin/calendar -->
+<rect x="76" y="943" width="105" height="55" rx="8" fill="#e7f0eb" stroke="#266447" stroke-width="4"/>
+<path d="M76 960 h105 M98 945 v-13 M157 945 v-13" stroke="#266447" stroke-width="6"/>
+<circle cx="203" cy="968" r="25" fill="#e7bb6b" stroke="#b48735" stroke-width="4"/>
+<text x="203" y="977" text-anchor="middle" font-size="26" font-weight="800" fill="#6d4c1a">$</text>
+
+<rect x="492" y="792" width="425" height="230" rx="22" fill="#fff" stroke="#e2e6e2" stroke-width="2" filter="url(#shadow)"/>
+<circle cx="537" cy="833" r="29" fill="#18583c"/><text x="537" y="844" text-anchor="middle" font-size="32" font-weight="800" fill="#fff">4</text>
+<text x="578" y="823" fill="#182820" font-size="23" font-weight="800">OROGRIS gestiona el dinero</text>
+<text x="578" y="861" fill="#1f713e" font-size="39" font-weight="900">3% + IVA</text>
+<text x="578" y="893" fill="#63746b" font-size="18">Honorarios por conseguir</text>
+<text x="578" y="919" fill="#63746b" font-size="18">los recursos.</text>
+<!-- illustrated banknotes -->
+<g transform="translate(540 948)">
+<rect x="0" y="0" width="125" height="54" rx="7" fill="#81b78c" stroke="#2e7344" stroke-width="4"/>
+<rect x="10" y="-8" width="125" height="54" rx="7" fill="#b4dbab" stroke="#2e7344" stroke-width="4"/>
+<circle cx="73" cy="18" r="17" fill="none" stroke="#2e7344" stroke-width="3"/>
+<text x="73" y="25" text-anchor="middle" font-size="21" fill="#2e7344" font-weight="800">$</text>
+</g>
+</g>
+<rect x="43" y="1044" width="874" height="218" rx="22" fill="#ecf2eb" stroke="#cbdace" stroke-width="2"/>
+<text x="69" y="1090" fill="#173f2b" font-size="29" font-weight="800" font-family="Arial">¿Qué documentos necesitas?</text>
+<g font-family="Arial" font-size="21" fill="#293d31">
+<circle cx="81" cy="1134" r="11" fill="#2b7e4d"/><path d="M75 1134 l5 5 9 -11" fill="none" stroke="#fff" stroke-width="3"/><text x="104" y="1142">Fotos de la propiedad</text>
+<circle cx="81" cy="1183" r="11" fill="#2b7e4d"/><path d="M75 1183 l5 5 9 -11" fill="none" stroke="#fff" stroke-width="3"/><text x="104" y="1190">Certificado de tradición y libertad</text>
+<circle cx="81" cy="1231" r="11" fill="#2b7e4d"/><path d="M75 1231 l5 5 9 -11" fill="none" stroke="#fff" stroke-width="3"/><text x="104" y="1238">Paz y salvo del inmueble</text>
+<circle cx="492" cy="1134" r="11" fill="#2b7e4d"/><path d="M486 1134 l5 5 9 -11" fill="none" stroke="#fff" stroke-width="3"/><text x="515" y="1142">Ficha de avalúo catastral</text>
+<circle cx="492" cy="1183" r="11" fill="#2b7e4d"/><path d="M486 1183 l5 5 9 -11" fill="none" stroke="#fff" stroke-width="3"/><text x="515" y="1190">Cédulas de identidad</text>
+<text x="515" y="1238" font-size="17" fill="#5d7062">Te acompañamos con la gestión</text>
+</g>
+<rect x="43" y="1283" width="874" height="105" rx="19" fill="url(#green)"/>
+<text x="480" y="1325" fill="#ffffff" text-anchor="middle" font-size="27" font-family="Arial" font-weight="800">¡Proceso ágil y acompañamiento personalizado!</text>
+<text x="480" y="1360" fill="#d5ebd8" text-anchor="middle" font-size="20" font-family="Arial">Tú asumes el costo de la papelería y los trámites correspondientes.</text>
+<text x="480" y="1426" fill="#5c6963" text-anchor="middle" font-size="14" font-family="Arial">Sujeto a estudio, aprobación, límites legales y condiciones finales del acreedor.</text>
+</svg>
