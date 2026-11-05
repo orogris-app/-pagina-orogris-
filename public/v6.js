@@ -4,7 +4,7 @@ let v6Rentals=[],v6Reservations=[],v6Payments=[],v6Vehicles=[],v6Visits=[];
 let v6Mortgage=null;
 let v6RentalData=[],v6VehicleData=[],v6Unavailable=[];
 let v6RentalEditing='',v6VehicleEditing='',v6Loaded={},v6LoadError='',v6Loading=false;
-let v6RentalFiles=[],v6VehicleFiles=[],v6CalendarRental='',v6CalendarOffset=0;
+let v6RentalFiles=[],v6VehicleFiles=[],v6CalendarRental='',v6CalendarOffset=0,v6ReceiptPendingId='';
 const v6Date=s=>s?String(s).slice(0,10):'';
 function v6Money(n){return n===null||n===undefined||n===''?'Por consultar':fmt(n)}
 function v6SafePhoto(p){return (Array.isArray(p?.photos)?p.photos:[]).find(s=>typeof s==='string'&&/^https:\/\//i.test(s))||''}
@@ -65,8 +65,8 @@ function v6RentalAdminView(){
  '<form id="v6RentalForm"><div class="two-col"><div class="form-field"><label>Vincular inmueble existente (opcional)</label><select class="field" id="v6LinkProperty"><option value="">Nueva propiedad para renta</option>'+items.map(p=>'<option value="'+esc(p.id)+'" '+(edit?.property_id===p.id?'selected':'')+'>'+esc(p.title)+'</option>').join('')+'</select></div><div class="form-field"><label>Nombre del arriendo *</label><input class="field" id="v6RTitle" required maxlength="180" value="'+esc(edit?.title||'')+'" placeholder="Casa finca de fin de semana"></div><div class="form-field"><label>Municipio</label><input class="field" id="v6RCity" value="'+esc(edit?.city||'')+'" placeholder="La Ceja"></div><div class="form-field"><label>Modalidad</label><select class="field" id="v6RMode">'+[['mixto','Por días y meses'],['dias','Días / fines de semana'],['meses','Meses'],['tradicional','Contrato tradicional']].map(([k,n])=>'<option value="'+k+'" '+((edit?.rental_mode||'mixto')===k?'selected':'')+'>'+n+'</option>').join('')+'</select></div><div class="form-field"><label>Tarifa por noche (COP)</label><input class="field" type="number" min="0" id="v6RNight" value="'+esc(edit?.nightly_rate??'')+'"></div><div class="form-field"><label>Tarifa fin de semana (COP)</label><input class="field" type="number" min="0" id="v6RWeekend" value="'+esc(edit?.weekend_rate??'')+'"></div><div class="form-field"><label>Canon mensual (COP)</label><input class="field" type="number" min="0" id="v6RMonth" value="'+esc(edit?.monthly_rate??'')+'"></div><div class="form-field"><label>Día de cobro mensual</label><input class="field" type="number" min="1" max="31" id="v6RDueDay" value="'+esc(edit?.due_day??'')+'"></div><div class="form-field"><label>Nombre del arrendatario (privado)</label><input class="field" id="v6RTenant" value="'+esc(edit?.tenant_name||'')+'"></div><div class="form-field"><label>Teléfono arrendatario (privado)</label><input class="field" type="tel" id="v6RTel" value="'+esc(edit?.tenant_phone||'')+'"></div><div class="form-field"><label>Inicio de contrato</label><input class="field" type="date" id="v6RStart" value="'+v6OptDate(edit?.contract_starts)+'"></div><div class="form-field"><label>Fin de contrato</label><input class="field" type="date" id="v6REnd" value="'+v6OptDate(edit?.contract_ends)+'"></div></div><div class="form-field"><label>Fotos del arriendo</label><input class="field" type="file" accept="image/*" multiple id="v6RentalFiles"><small>Desde el celular. También puedes vincular un inmueble existente para usar sus fotografías.</small><span id="v6RentalFilesCount" class="muted"></span></div><div class="form-field"><label>Descripción comercial pública (sin datos personales)</label><textarea class="field" id="v6RDesc" rows="3">'+esc(edit?.description||'')+'</textarea></div><div class="quick"><label><input type="checkbox" id="v6RPublic" '+(edit?.published?'checked':'')+'> Publicar en el catálogo de arriendos</label> <label><input type="checkbox" id="v6RActive" '+(!edit||edit.active?'checked':'')+'> Activa</label></div><div class="form-toolbar"><button class="btn gold" type="submit" '+(backend!=='cloud'?'disabled':'')+'>'+(edit?'Actualizar arriendo':'Guardar arriendo')+'</button>'+(edit?'<button class="btn" type="button" data-action="v6cancelRental">Cancelar edición</button>':'')+'</div></form></section>'+
  '<section class="section"><div class="section-heading"><div><h2>Mis arriendos</h2><p>Publicados y administrados por Orogris.</p></div></div>'+ (v6Rentals.length?'<div class="v6-list">'+v6Rentals.map(r=>'<article class="v6-item"><div><b>'+esc(r.title)+'</b><div class="muted">'+esc(r.rental_mode)+' · '+esc(r.city||'')+' · '+(r.published?'Publicado':'Privado')+'</div><div>'+v6Money(r.nightly_rate)+' / noche · '+v6Money(r.monthly_rate)+' / mes</div></div><button class="btn small" data-v6-edit-rental="'+esc(r.id)+'">Editar</button></article>').join('')+'</div>':'<p class="muted">Todavía no has registrado arriendos.</p>')+'</section>'+
  v6CalendarView()+'<section class="section"><div class="section-heading"><div><h2>Solicitudes de reserva</h2><p>Pendientes no bloquean fechas; solo tú confirmas.</p></div></div>'+ (v6Reservations.length?'<div class="v6-list">'+v6Reservations.map(r=>'<article class="v6-item"><div><b>'+esc(v6Rentals.find(x=>x.id===r.rental_id)?.title||'Propiedad')+'</b><div class="muted">'+esc(r.guest_name)+' · '+esc(r.guest_phone)+' · '+v6OptDate(r.check_in)+' a '+v6OptDate(r.check_out)+'</div><span class="pill '+(r.status==='confirmada'?'':r.status==='cancelada'?'sold':'draft')+'">'+esc(r.status)+'</span> '+(r.status==='pendiente'?'<a class="btn small green" href="tel:'+esc(String(r.guest_phone).replace(/[^+0-9]/g,''))+'">Llamar</a>':'')+'</div><div class="quick">'+(r.status==='pendiente'?'<button class="btn small green" data-v6-reservation="'+esc(r.id)+'" data-v6-status="confirmada">Confirmar</button><button class="btn small" data-v6-reservation="'+esc(r.id)+'" data-v6-status="cancelada">Cancelar</button>':'')+'</div></article>').join('')+'</div>':'<p class="muted">No hay solicitudes todavía.</p>')+'</section>'+
- '<section class="section"><div class="section-heading"><div><h2>Registro de pagos y cartera</h2><p>Control manual del canon; no realiza cobros bancarios.</p></div></div><form id="v6PaymentForm"><div class="two-col"><div class="form-field"><label>Inmueble</label><select class="field" id="v6PayRental" required>'+v6Rentals.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.title)+'</option>').join('')+'</select></div><div class="form-field"><label>Período (AAAA-MM)</label><input class="field" type="month" id="v6PayPeriod" required value="'+new Date().toISOString().slice(0,7)+'"></div><div class="form-field"><label>Vencimiento</label><input class="field" type="date" id="v6PayDue" required value="'+new Date().toISOString().slice(0,10)+'"></div><div class="form-field"><label>Valor a cobrar (COP)</label><input class="field" type="number" min="0" id="v6PayDueAmount" required></div><div class="form-field"><label>Abonado (COP)</label><input class="field" type="number" min="0" id="v6PayPaid" value="0"></div><div class="form-field"><label>Fecha del abono</label><input class="field" type="date" id="v6PayPaidOn"></div></div><button class="btn gold" type="submit" '+(!v6Rentals.length||backend!=='cloud'?'disabled':'')+'>Registrar pago</button></form>'+
- (v6Payments.length?'<div class="v6-list" style="margin-top:12px">'+v6Payments.map(p=>'<div class="v6-item"><div><b>'+esc(v6Rentals.find(r=>r.id===p.rental_id)?.title||'Arriendo')+'</b><div class="muted">'+esc(p.period)+' · vence '+v6OptDate(p.due_on)+'</div></div><div><b>'+v6Money(p.amount_paid)+'</b> / '+v6Money(p.amount_due)+'</div></div>').join('')+'</div>':'<p class="muted">Sin pagos registrados.</p>')+'</section>';
+ '<section class="section"><div class="section-heading"><div><h2>Registro de pagos y cartera</h2><p>Control manual del canon; no realiza cobros bancarios.</p></div></div><form id="v6PaymentForm"><div class="two-col"><div class="form-field"><label>Inmueble</label><select class="field" id="v6PayRental" required>'+v6Rentals.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.title)+'</option>').join('')+'</select></div><div class="form-field"><label>Período (AAAA-MM)</label><input class="field" type="month" id="v6PayPeriod" required value="'+new Date().toISOString().slice(0,7)+'"></div><div class="form-field"><label>Vencimiento</label><input class="field" type="date" id="v6PayDue" required value="'+new Date().toISOString().slice(0,10)+'"></div><div class="form-field"><label>Valor a cobrar (COP)</label><input class="field" type="number" min="0" id="v6PayDueAmount" required></div><div class="form-field"><label>Abonado (COP)</label><input class="field" type="number" min="0" id="v6PayPaid" value="0"></div><div class="form-field"><label>Fecha del abono</label><input class="field" type="date" id="v6PayPaidOn"></div><div class="form-field"><label>Recibo o comprobante (opcional)</label><input class="field" type="file" id="v6PayReceipt" accept="image/jpeg,image/png,image/webp,application/pdf"><small>Foto o PDF de máximo 10 MB. Solo disponible en tu panel privado.</small></div></div><button class="btn gold" type="submit" '+(!v6Rentals.length||backend!=='cloud'?'disabled':'')+'>Registrar pago</button></form>'+
+ (v6Payments.length?'<div class="v6-list" style="margin-top:12px">'+v6Payments.map(p=>'<div class="v6-item"><div><b>'+esc(v6Rentals.find(r=>r.id===p.rental_id)?.title||'Arriendo')+'</b><div class="muted">'+esc(p.period)+' · vence '+v6OptDate(p.due_on)+'</div></div><div><b>'+v6Money(p.amount_paid)+'</b> / '+v6Money(p.amount_due)+'<div class="muted">'+(Number(p.amount_due)-Number(p.amount_paid)>0?'Saldo: '+v6Money(Math.max(0,Number(p.amount_due)-Number(p.amount_paid))):'Sin saldo pendiente')+'</div><div class="quick">'+(p.receipt_path?'<button class="btn small" data-v6-view-receipt="'+esc(p.id)+'" type="button">Ver comprobante</button>':'<button class="btn small" data-v6-attach-receipt="'+esc(p.id)+'" type="button">Adjuntar comprobante</button>')+'</div></div></div>').join('')+'</div>':'<p class="muted">Sin pagos registrados.</p>')+'</section>';
 }
 function v6VehicleAdminView(){
  const e=v6Vehicles.find(v=>v.id===v6VehicleEditing);
@@ -214,9 +214,65 @@ async function v6SubmitRental(e){
  const payload={owner_id:v6Owner(),property_id:related?.id||null,title:$('#v6RTitle').value.trim(),city:$('#v6RCity').value.trim(),description:$('#v6RDesc').value.trim(),rental_mode:$('#v6RMode').value,nightly_rate:v6MoneyNumber('v6RNight'),weekend_rate:v6MoneyNumber('v6RWeekend'),monthly_rate:v6MoneyNumber('v6RMonth'),due_day:v6MoneyNumber('v6RDueDay'),tenant_name:$('#v6RTenant').value.trim()||null,tenant_phone:$('#v6RTel').value.trim()||null,contract_starts:$('#v6RStart').value||null,contract_ends:$('#v6REnd').value||null,photos:related?.photos||old?.photos||[],published:$('#v6RPublic').checked,active:$('#v6RActive').checked,updated_at:new Date().toISOString()};
  try{const id=v6RentalEditing||crypto.randomUUID();if(!v6RentalEditing)payload.id=id;if(v6RentalFiles.length){await refreshSession();const uploaded=[];for(const file of v6RentalFiles)uploaded.push(await uploadPhoto(await compress(file),id));payload.photos=[...payload.photos,...uploaded].slice(0,40)}await v6Upsert('og_rentals',payload,v6RentalEditing);v6RentalEditing='';v6RentalFiles=[];toast('Arriendo guardado');await v6LoadAdmin('rentals')}catch(err){toast('No se guardó: '+err.message)}
 }
+function v6ReceiptValidate(file){
+ if(!file)return;
+ const allowed=['image/jpeg','image/png','image/webp','application/pdf'];
+ if(!allowed.includes(file.type))throw Error('El comprobante debe ser JPG, PNG, WEBP o PDF.');
+ if(file.size>10*1024*1024)throw Error('El comprobante no puede superar 10 MB.');
+ if(file.size===0)throw Error('El archivo está vacío.');
+}
+async function v6SaveReceipt(file,id){
+ v6ReceiptValidate(file);
+ if(backend!=='cloud'||!await refreshSession()||!session)throw Error('Inicia sesión para guardar el comprobante.');
+ const ext={'image/jpeg':'jpg','image/png':'png','image/webp':'webp','application/pdf':'pdf'}[file.type];
+ const path=v6Owner()+'/'+id+'/'+crypto.randomUUID()+'.'+ext;
+ const response=await fetch(settings.url.replace(/\/$/,'')+'/storage/v1/object/og-rent-receipts/'+path,{
+   method:'POST',headers:{apikey:settings.key,Authorization:'Bearer '+session.access_token,'Content-Type':file.type,'x-upsert':'false'},body:file
+ });
+ if(!response.ok)throw Error('No se pudo subir el comprobante: '+(await response.text()).slice(0,170));
+ await v6Upsert('og_rent_payments',{receipt_path:path},id);
+}
+async function v6AttachReceipt(id,file){
+ try{
+  if(!v6Payments.some(p=>p.id===id))throw Error('No se encontró el pago.');
+  await v6SaveReceipt(file,id);
+  toast('Comprobante guardado de forma privada');
+  await v6LoadAdmin('rentals');
+ }catch(e){toast('Error con el comprobante: '+e.message)}
+}
+async function v6OpenReceipt(id){
+ const payment=v6Payments.find(p=>p.id===id);
+ if(!payment?.receipt_path)return toast('Este pago no tiene comprobante.');
+ const viewer=window.open('about:blank','_blank');
+ if(viewer)viewer.opener=null;
+ try{
+  if(!await refreshSession()||!session)throw Error('Inicia sesión nuevamente.');
+  const path=String(payment.receipt_path);
+  if(!path.startsWith(v6Owner()+'/')||!/^[a-f0-9-]+\/[a-f0-9-]+\/[a-f0-9-]+\.(jpg|jpeg|png|webp|pdf)$/i.test(path))throw Error('Ruta de comprobante no válida.');
+  const encoded=path.split('/').map(encodeURIComponent).join('/');
+  const response=await sb('/storage/v1/object/sign/og-rent-receipts/'+encoded,{method:'POST',body:JSON.stringify({expiresIn:120})});
+  const signed=response?.signedURL||response?.signedUrl||'';
+  if(!signed||!signed.startsWith('/object/sign/'))throw Error('No se pudo generar el acceso privado.');
+  const url=settings.url.replace(/\/$/,'')+'/storage/v1'+signed;
+  if(viewer)viewer.location.href=url;else window.location.href=url;
+ }catch(e){if(viewer)viewer.close();toast('No fue posible abrir el comprobante: '+e.message)}
+}
 async function v6SubmitPayment(e){
- e.preventDefault();const payload={owner_id:v6Owner(),rental_id:$('#v6PayRental').value,period:$('#v6PayPeriod').value,due_on:$('#v6PayDue').value,amount_due:Number($('#v6PayDueAmount').value),amount_paid:Number($('#v6PayPaid').value||0),paid_on:$('#v6PayPaidOn').value||null};
- try{await v6Upsert('og_rent_payments',payload);toast('Pago registrado');await v6LoadAdmin('rentals')}catch(err){toast('Error: '+err.message)}
+ e.preventDefault();
+ const file=$('#v6PayReceipt')?.files?.[0]||null;
+ try{v6ReceiptValidate(file)}catch(err){return toast(err.message)}
+ if(!await refreshSession()||!session)return toast('Inicia sesión para registrar el pago');
+ const payload={id:crypto.randomUUID(),owner_id:v6Owner(),rental_id:$('#v6PayRental').value,period:$('#v6PayPeriod').value,due_on:$('#v6PayDue').value,amount_due:Number($('#v6PayDueAmount').value),amount_paid:Number($('#v6PayPaid').value||0),paid_on:$('#v6PayPaidOn').value||null};
+ const submit=e.target.querySelector('[type="submit"]');if(submit)submit.disabled=true;
+ try{
+  await sb('/rest/v1/og_rent_payments',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify(payload)});
+  if(file){
+   try{await v6SaveReceipt(file,payload.id);toast('Pago y comprobante guardados')}
+   catch(err){toast('Pago registrado, pero no se guardó el comprobante. Podrás adjuntarlo después.')}
+  }else toast('Pago registrado manualmente');
+  await v6LoadAdmin('rentals');
+ }catch(err){toast('No se pudo registrar el pago: '+err.message)}
+ finally{if(submit)submit.disabled=false}
 }
 async function v6SubmitVehicle(e){
  e.preventDefault();const old=v6Vehicles.find(v=>v.id===v6VehicleEditing);
@@ -244,8 +300,10 @@ async function v6ChangeReservation(id,status){
  try{await v6Upsert('og_reservations',{status,updated_at:new Date().toISOString()},id);toast('Reserva '+status);await v6LoadAdmin('rentals')}catch(err){toast('No se pudo actualizar: '+err.message+'. Comprueba que no se crucen fechas.')}
 }
 document.addEventListener('click',e=>{
- const target=e.target.closest('[data-v6-edit-rental],[data-v6-edit-vehicle],[data-v6-reservation],[data-v6-request],[data-action]');
+ const target=e.target.closest('[data-v6-edit-rental],[data-v6-edit-vehicle],[data-v6-reservation],[data-v6-request],[data-v6-view-receipt],[data-v6-attach-receipt],[data-action]');
  if(!target)return;
+ if(target.dataset.v6ViewReceipt){v6OpenReceipt(target.dataset.v6ViewReceipt);return}
+ if(target.dataset.v6AttachReceipt){const id=target.dataset.v6AttachReceipt;const input=document.createElement('input');input.type='file';input.accept='image/jpeg,image/png,image/webp,application/pdf';input.addEventListener('change',()=>{if(input.files?.[0])v6AttachReceipt(id,input.files[0])},{once:true});input.click();return}
  if(target.dataset.v6EditRental){v6RentalEditing=target.dataset.v6EditRental;render();window.scrollTo(0,0)}
  if(target.dataset.v6EditVehicle){v6VehicleEditing=target.dataset.v6EditVehicle;render();window.scrollTo(0,0)}
  if(target.dataset.v6Reservation){v6ChangeReservation(target.dataset.v6Reservation,target.dataset.v6Status)}
