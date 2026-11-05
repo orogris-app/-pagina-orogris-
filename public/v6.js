@@ -138,8 +138,8 @@ async function v6SaveMortgage(e){
 }
 async function v6PublicMortgages(){
  document.title='OROGRIS | Hipotecas';
- const whatsapp='https://wa.me/'+String(config.contactWhatsapp||'').replace(/\D/g,'')+'?text='+encodeURIComponent('Hola Orogris, quiero información sobre hipotecas.');
- const contact='<p style="margin-top:20px"><a class="btn green" href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a></p>';
+ const whatsapp='https://wa.me/573015904303?text='+encodeURIComponent('Hola, vi la sección de hipotecas de Orogris y quisiera conocer los requisitos, las tasas de interés y el proceso para hipotecar mi propiedad.');
+ const contact='<p style="margin-top:20px"><a class="btn green" href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer" aria-label="Consultar hipotecas por WhatsApp Business al 301 590 4303">Consultar hipotecas por WhatsApp Business · 301 590 4303</a></p>';
  $('#shell').innerHTML=v6PublicWrap('Hipotecas sobre inmuebles','Conoce nuestro servicio y contáctanos para resolver tus inquietudes.',
  '<section class="section" id="v6MortgagePublic"><p class="muted">Cargando información sobre hipotecas...</p></section>');
  try{
