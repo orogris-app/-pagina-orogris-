@@ -173,18 +173,19 @@ async function v6PublicVehicles(){
 
 async function v6PublicMortgages(){
  document.title='OROGRIS | Hipotecas';
- const whatsapp='https://wa.me/573015904303?text='+encodeURIComponent('Hola, vi la sección de hipotecas de Orogris y quisiera conocer los requisitos, las tasas de interés y el proceso para hipotecar mi propiedad.');
- const contact='<p style="margin-top:20px"><a class="btn green" href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer" aria-label="Consultar hipotecas por WhatsApp Business al 301 590 4303">Consultar hipotecas por WhatsApp Business · 301 590 4303</a></p>';
- $('#shell').innerHTML=v6PublicWrap('Hipotecas sobre inmuebles','Conoce nuestro servicio y contáctanos para resolver tus inquietudes.',
- '<section class="section" id="v6MortgagePublic"><p class="muted">Cargando información sobre hipotecas...</p></section>');
+ const whatsapp='https://wa.me/573015904303?text='+encodeURIComponent('Hola, vi la información de hipotecas de Orogris. Quiero consultar qué monto podría conseguir usando mi inmueble como garantía.');
+ const contact='<div class="v6-mortgage-contact"><h2>¿Quieres conocer cuánto podrías conseguir?</h2><p>Escríbenos, cuéntanos sobre tu propiedad y revisamos tu caso personalmente.</p><a class="btn green v6-mortgage-button" href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer" aria-label="Escribir al WhatsApp Business de Orogris 301 590 4303">Escribir a WhatsApp Business · 301 590 4303</a></div>';
+ const image='<div class="v6-mortgage-infographic"><img src="hipotecas-orogris.svg" alt="Infografía ilustrada: financiación con hipoteca en primer grado sobre una propiedad, del 30 al 50 por ciento del valor comercial, intereses mensuales de 1,5 a 2 por ciento sujetos a condiciones, honorarios Orogris del 3 por ciento más IVA y documentos requeridos." loading="eager" width="960" height="1450"></div>';
+ $('#shell').innerHTML=v6PublicWrap('Hipotecas sobre inmuebles','¿Necesitas dinero y tienes una propiedad? Te explicamos cómo funciona la financiación con garantía hipotecaria.',
+ '<section class="section v6-mortgage-section">'+image+'<section class="v6-mortgage-custom" id="v6MortgagePublic"><p class="muted">Consultando detalles adicionales...</p></section>'+contact+'<p class="v6-mortgage-legal">Información comercial orientativa, sujeta a estudio, disponibilidad y aprobación del acreedor. Las tasas y costos deberán ajustarse a los límites legales aplicables en Colombia; la tasa y el contrato finales se informan antes de formalizar la operación.</p></section>');
  try{
   const rows=await v6PublicRequest('/rest/v1/rpc/og_public_mortgage_content',{method:'POST',body:'{}'});
   const item=Array.isArray(rows)?rows[0]:null;
-  $('#v6MortgagePublic').innerHTML=(item?.body
-   ?'<h2>'+esc(item.title||'¿Cómo funcionan las hipotecas?')+'</h2><div class="v6-mortgage-body">'+esc(item.body)+'</div><p class="muted">La información es orientativa; las condiciones definitivas se acuerdan según cada caso.</p>'
-   :'<h2>Hipotecas en Orogris</h2><p>Para conocer cómo funciona el proceso y las condiciones aplicables a tu caso, comunícate con nosotros.</p>')+contact;
+  $('#v6MortgagePublic').innerHTML=item?.body
+    ?'<h2>'+esc(item.title||'Información adicional')+'</h2><div class="v6-mortgage-body">'+esc(item.body)+'</div>'
+    :'<h2>Te ayudamos con la gestión</h2><p>Analizamos tu inmueble, revisamos la documentación y te acompañamos durante el proceso de consecución de recursos.</p>';
  }catch{
-  $('#v6MortgagePublic').innerHTML='<h2>Hipotecas en Orogris</h2><p>La información detallada estará disponible próximamente. Si deseas resolver tus dudas, contáctanos.</p>'+contact;
+  $('#v6MortgagePublic').innerHTML='<h2>Te ayudamos con la gestión</h2><p>Comunícate directamente con Orogris para revisar los requisitos, los intereses y las condiciones disponibles para tu propiedad.</p>';
  }
 }
 
