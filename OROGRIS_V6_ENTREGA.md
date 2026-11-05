@@ -12,6 +12,10 @@
 - **Hipotecas sin PDF ni subida de documentos:** texto que el administrador escribe y publica, con botón a WhatsApp Business.
 - Archivos nuevos en public/v6.js y public/v6.css; migración aditiva en supabase/migrations/20261104_orogris_v6.sql.
 
+### Vista de diseño OROGRIS CARS
+- Demostración de ficha automotriz sin vehículos reales: https://deploy-preview-2--eclectic-hamster-db58dc.netlify.app/?section=vehiculos&demo=1
+- Los datos ilustrativos de esta demo no están publicados para venta; su botón de WhatsApp está desactivado.
+
 ### Confirmaciones
 - Netlify deploy preview: https://deploy-preview-2--eclectic-hamster-db58dc.netlify.app/
 - La sintaxis JS base y V6 fue verificada; las fichas de carros pasaron pruebas aisladas de sanitización, enlaces y datos.
