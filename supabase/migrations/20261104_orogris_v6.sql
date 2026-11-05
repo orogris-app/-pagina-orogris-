@@ -177,4 +177,30 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON public.og_rentals,public.og_reservations,pu
 GRANT SELECT,INSERT ON public.og_visits TO authenticated;
 GRANT INSERT ON public.og_reservations,public.og_visits TO anon;
 GRANT USAGE,SELECT ON SEQUENCE public.og_visits_id_seq TO anon,authenticated;
+-- OROGRIS V6: explicación de hipotecas editable; sin subida de documentos.
+CREATE TABLE IF NOT EXISTS public.og_mortgage_content (
+ owner_id uuid PRIMARY KEY DEFAULT auth.uid(),
+ title text NOT NULL DEFAULT '¿Cómo funcionan las hipotecas?' CHECK(char_length(title) BETWEEN 3 AND 150),
+ body text NOT NULL DEFAULT '' CHECK(char_length(body) <= 15000),
+ published boolean NOT NULL DEFAULT false,
+ updated_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE public.og_mortgage_content ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS og_mortgage_content_owner_manage ON public.og_mortgage_content;
+CREATE POLICY og_mortgage_content_owner_manage ON public.og_mortgage_content
+ FOR ALL TO authenticated USING(owner_id=auth.uid()) WITH CHECK(owner_id=auth.uid());
+REVOKE ALL ON public.og_mortgage_content FROM anon;
+GRANT SELECT,INSERT,UPDATE,DELETE ON public.og_mortgage_content TO authenticated;
+
+-- El visitante solamente puede consultar el título y el texto publicados.
+CREATE OR REPLACE FUNCTION public.og_public_mortgage_content()
+RETURNS TABLE(title text, body text)
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
+ SELECT m.title,m.body FROM public.og_mortgage_content m
+ WHERE m.published=true AND char_length(trim(m.body)) > 0
+ ORDER BY m.updated_at DESC LIMIT 1
+$$;
+REVOKE ALL ON FUNCTION public.og_public_mortgage_content() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.og_public_mortgage_content() TO anon,authenticated;
+
 COMMIT;
