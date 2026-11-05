@@ -8,7 +8,7 @@ let v6RentalFiles=[],v6VehicleFiles=[],v6CalendarRental='',v6CalendarOffset=0,v6
 const v6Date=s=>s?String(s).slice(0,10):'';
 function v6Money(n){return n===null||n===undefined||n===''?'Por consultar':fmt(n)}
 function v6SafePhoto(p){return (Array.isArray(p?.photos)?p.photos:[]).find(s=>typeof s==='string'&&/^https:\/\//i.test(s))||''}
-function v6Notice(){return '<div class="tip info"><b>Prueba V6:</b> los datos se guardan en Supabase cuando las tablas V6 están instaladas. La V5 permanece independiente.</div>'}
+function v6Notice(){return '<div class="tip info"><b>OROGRIS V6:</b> tus arriendos, reservas y pagos manuales se guardan de forma privada en Supabase. No se realizan cobros automáticos.</div>'}
 function v6ErrorMarkup(){return v6LoadError?'<div class="tip warn"><b>Conexión V6 pendiente:</b> '+esc(v6LoadError)+'. Falta configurar las tablas nuevas en Supabase o comprobar la sesión.</div>':''}
 function v6AdminEmpty(){return '<div class="tip info">En modo local estos módulos todavía no guardan información. Inicia sesión con Supabase para administrarlos.</div>'}
 function v6OptDate(s){return s?esc(v6Date(s)):''}
