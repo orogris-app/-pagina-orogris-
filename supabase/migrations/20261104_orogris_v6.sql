@@ -123,6 +123,11 @@ CREATE TABLE IF NOT EXISTS public.og_vehicles (
  title text NOT NULL,
  brand text NOT NULL DEFAULT '',
  model text NOT NULL DEFAULT '',
+ version text NOT NULL DEFAULT '',
+ transmission text NOT NULL DEFAULT '',
+ fuel text NOT NULL DEFAULT '',
+ color text NOT NULL DEFAULT '',
+ engine text NOT NULL DEFAULT '',
  year integer CHECK(year BETWEEN 1950 AND 2100),
  mileage integer CHECK(mileage IS NULL OR mileage>=0),
  price numeric(15,2) CHECK(price IS NULL OR price>=0),
@@ -140,9 +145,9 @@ CREATE POLICY og_vehicles_owner_manage ON public.og_vehicles FOR ALL TO authenti
  USING (owner_id=auth.uid()) WITH CHECK (owner_id=auth.uid());
 -- Igual que arriendos: la lectura pública de vehículos usa RPC de columnas explícitas.
 CREATE OR REPLACE FUNCTION public.og_public_vehicles()
-RETURNS TABLE(id uuid,owner_id uuid,title text,brand text,model text,year integer,mileage integer,price numeric,city text,description text,photos jsonb)
+RETURNS TABLE(id uuid,owner_id uuid,title text,brand text,model text,version text,transmission text,fuel text,color text,engine text,year integer,mileage integer,price numeric,city text,description text,photos jsonb)
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
- SELECT v.id,v.owner_id,v.title,v.brand,v.model,v.year,v.mileage,v.price,v.city,v.description,v.photos
+ SELECT v.id,v.owner_id,v.title,v.brand,v.model,v.version,v.transmission,v.fuel,v.color,v.engine,v.year,v.mileage,v.price,v.city,v.description,v.photos
  FROM public.og_vehicles v WHERE v.published
 $$;
 REVOKE ALL ON FUNCTION public.og_public_vehicles() FROM PUBLIC;
