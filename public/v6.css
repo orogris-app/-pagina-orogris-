@@ -31,3 +31,120 @@
 .v6-cal-occupied{background:#ead4a1;color:#4a3413;font-weight:800;border:1px solid #caa04d}
 .v6-cal-pending{background:#d9dfe6;color:#3e4550;font-weight:700}
 @media(max-width:450px){.v6-cal-day,.v6-cal-blank{min-height:34px;font-size:12px}.v6-cal{gap:3px}}
+
+/* OROGRIS CARS — identidad automotriz premium, aislada de fichas inmobiliarias */
+.v6-cars-page{--cars-black:#0c1016;--cars-slate:#161d26;--cars-grey:#9da6b3;--cars-gold:#caa04d;background:#0d1219;color:#f3f5f7;min-height:100vh;line-height:1.5}
+.v6-cars-page *, .v6-cars-page *::before,.v6-cars-page *::after{box-sizing:border-box}
+.v6-cars-page a{text-decoration:none}
+.v6-cars-container{max-width:1270px;padding:0 20px;margin:auto}
+.v6-cars-header{min-height:97px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #343a43}
+.v6-cars-brand{display:flex;align-items:center;gap:15px;min-width:0}
+.v6-cars-mark{display:block;min-width:0}
+.v6-cars-mark .brand{display:flex;align-items:center;min-width:0;gap:10px;padding:0}
+.v6-cars-mark .brand img{height:42px;width:42px;object-fit:contain}
+.v6-cars-mark .brand strong{font-size:22px}
+.v6-cars-mark .brand span{white-space:nowrap}
+.v6-cars-brand-divider{height:34px;width:1px;background:#746849}
+.v6-cars-word{font-weight:900;letter-spacing:4px;font-size:20px;color:var(--cars-gold)}
+.v6-cars-admin{color:#bdc5cd;font-size:12px;border:1px solid #39414c;padding:11px 13px;border-radius:10px}
+.v6-cars-admin:hover,.v6-cars-admin:focus-visible{color:white;border-color:var(--cars-gold)}
+.v6-cars-nav{display:flex;gap:26px;flex-wrap:wrap;padding:14px 2px 18px}
+.v6-cars-nav a{color:#bec7d0;font-size:13px;font-weight:700;border-bottom:2px solid transparent;padding:5px 0 8px}
+.v6-cars-nav a.active,.v6-cars-nav a:hover{color:#f5d99c;border-color:#caa04d}
+.v6-cars-hero{position:relative;isolation:isolate;overflow:hidden;border:1px solid #373c45;background:radial-gradient(ellipse at 85% 20%,#3b424f 0,#1e2632 35%,#111923 73%);border-radius:22px;margin-top:18px;min-height:348px;display:flex;align-items:center;padding:42px clamp(25px,5vw,72px)}
+.v6-cars-hero-inner{position:relative;z-index:1;max-width:645px}
+.v6-cars-overline{color:#caa04d;font-size:10px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase}
+.v6-cars-hero h1{margin:12px 0;font-size:clamp(42px,6.6vw,86px);line-height:1.05;font-weight:900;letter-spacing:-2.6px}
+.v6-cars-hero h1 em{font-style:normal;color:#caa04d}
+.v6-cars-hero p{font-size:clamp(14px,1.7vw,17px);color:#c2cbd4;line-height:1.7;max-width:490px;margin:0 0 26px}
+.v6-cars-hero-accent{position:absolute;right:-35px;bottom:-65px;font-weight:900;font-size:clamp(110px,20vw,260px);color:rgba(255,255,255,.035);line-height:1;letter-spacing:-16px;pointer-events:none;transform:rotate(-9deg)}
+.v6-cars-button,.v6-cars-ghost{display:inline-flex;justify-content:center;align-items:center;text-align:center;gap:8px;font-weight:800;font-size:12px;border-radius:10px;min-height:42px;padding:12px 18px;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+.v6-cars-button{background:linear-gradient(130deg,#e1b866,#c39a49);color:#17191d!important;border:1px solid #d1aa59}
+.v6-cars-button:hover,.v6-cars-button:focus-visible{background:#f2cc84;transform:translateY(-1px)}
+.v6-cars-ghost{background:#1e2630;color:#eff1f3!important;border:1px solid #4a5665}
+.v6-cars-ghost:hover,.v6-cars-ghost:focus-visible{border-color:#caa04d}
+.v6-cars-catalog{padding:45px 0 65px}
+.v6-cars-catalog-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:23px}
+.v6-cars-catalog-head h2{font-size:28px;letter-spacing:-.65px;margin:7px 0 0;color:white}
+.v6-cars-counter{color:#bfc7d0;font-size:12px}
+.v6-cars-filters{display:grid;grid-template-columns:minmax(200px,2fr) minmax(160px,1fr) minmax(160px,1fr);gap:12px;background:#19212c;border:1px solid #343d4a;padding:17px;border-radius:14px;margin-bottom:22px}
+.v6-cars-filters label{display:grid;gap:6px;font-size:11px;font-weight:700;color:#d6dce3}
+.v6-cars-filters input,.v6-cars-filters select{width:100%;min-width:0;height:43px;border:1px solid #495463;background:#101720;border-radius:8px;padding:9px 12px;color:white;outline:0}
+.v6-cars-filters input:focus,.v6-cars-filters select:focus{border-color:#caa04d}
+.v6-cars-filters input::placeholder{color:#9aa5b2}
+.v6-cars-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.v6-car-card{background:#19212c;border:1px solid #343d48;border-radius:16px;overflow:hidden;min-width:0;box-shadow:0 14px 30px #05090c33;transition:transform .15s ease,border-color .15s ease}
+.v6-car-card:hover{transform:translateY(-3px);border-color:#947b4a}
+.v6-car-photo{position:relative;display:block;width:100%;aspect-ratio:16/10;background:linear-gradient(140deg,#222b36,#0e131a);overflow:hidden}
+.v6-car-photo img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .2s ease}
+.v6-car-card:hover .v6-car-photo img{transform:scale(1.035)}
+.v6-car-no-photo{height:100%;min-height:180px;display:grid;place-content:center;text-align:center;letter-spacing:2px;font-size:22px;font-weight:900;color:#d8dce1;background:linear-gradient(125deg,#1a232f,#111722)}
+.v6-car-no-photo span{color:#d9b165}
+.v6-car-chip{position:absolute;left:13px;top:12px;padding:6px 9px;background:#0c1119d9;border:1px solid #6f633f;color:#efd39a;border-radius:6px;font-size:9px;letter-spacing:1.2px;font-weight:800}
+.v6-car-card-body{padding:21px;display:flex;flex-direction:column;gap:5px}
+.v6-car-card-title{display:block;color:#fff!important;font-size:21px;font-weight:850;letter-spacing:-.3px;line-height:1.2;margin-top:6px;min-height:51px}
+.v6-car-card-title:hover{color:#eccc86!important}
+.v6-car-card-price{color:#ecc77d;font-size:25px;font-weight:850;margin:8px 0 15px;letter-spacing:-.4px}
+.v6-car-card-specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px 8px;padding:14px 0;border-top:1px solid #344150;border-bottom:1px solid #344150}
+.v6-car-spec{min-width:0;display:grid;gap:6px}
+.v6-car-spec small{color:#98a4b1;font-size:10px;font-weight:550}
+.v6-car-spec strong{color:#f4f5f6;font-size:12px;font-weight:800;word-wrap:break-word}
+.v6-car-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.v6-car-card-actions a{font-size:11px;padding:11px 7px}
+.v6-cars-empty,.v6-cars-loading{grid-column:1/-1;background:#18212c;border:1px dashed #5a6470;border-radius:14px;padding:35px;text-align:center;color:#d2d8df}
+.v6-cars-empty a{color:#e7bf70;text-decoration:underline}
+.v6-cars-footer{text-align:center;color:#929eab;font-size:11px;padding:25px 0 40px;border-top:1px solid #353d45;margin-top:20px}
+.v6-car-detail{padding:24px 0 55px}
+.v6-car-breadcrumb{color:#abb5be;font-size:12px;margin-bottom:19px}
+.v6-car-breadcrumb a{color:#e1c083}
+.v6-car-detail-title{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:27px}
+.v6-car-detail-title h1{font-size:clamp(25px,4vw,43px);letter-spacing:-1px;line-height:1.1;margin:9px 0}
+.v6-car-detail-title p{color:#b6c0cb;margin:0}
+.v6-car-detail-title>div:last-child{text-align:right;min-width:175px}
+.v6-car-detail-title>div:last-child small{color:#aab4bf;font-size:10px;letter-spacing:1.6px;display:block}
+.v6-car-detail-title>div:last-child strong{display:block;color:#eac477;font-size:clamp(22px,3vw,33px);margin-top:7px}
+.v6-car-detail-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(265px,.85fr);gap:23px;align-items:start}
+.v6-car-photo-panel,.v6-car-details-box{min-width:0}
+.v6-car-photo-panel>.og-gallery{margin-top:0}
+.v6-car-photo-panel .og-gallery-viewport{border-radius:13px}
+.v6-car-photo-panel .og-gallery-slide{height:clamp(290px,47vw,530px)}
+.v6-car-info,.v6-car-details-box{background:#19212c;border:1px solid #35404b;border-radius:15px;padding:24px}
+.v6-car-info{margin-top:23px}
+.v6-car-info h2,.v6-car-details-box h2{color:#f7f7f7;margin:0 0 19px;font-size:19px}
+.v6-car-info p{color:#c6ccd3;font-size:14px;line-height:1.85;white-space:pre-line;margin:0}
+.v6-car-details-box{position:sticky;top:20px}
+.v6-car-detail-specs{display:grid;grid-template-columns:1fr 1fr;gap:18px 9px;padding-bottom:21px;border-bottom:1px solid #3a4550}
+.v6-car-detail-specs .v6-car-spec strong{font-size:13px}
+.v6-car-cta{display:grid;gap:9px;text-align:center;margin-top:21px}
+.v6-cars-button-wide{width:100%;font-size:12px}
+.v6-car-cta small{font-size:11px;color:#b7c0c9}
+.v6-car-disclaimer{font-size:11px;color:#9eabb8;line-height:1.7;padding:17px 8px}
+.v6-car-bottom-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.v6-car-detail-empty{min-height:320px;border-radius:13px}
+.v6-mortgage-body{white-space:pre-wrap;line-height:1.85;overflow-wrap:anywhere}
+.v6-mortgage-editor{min-height:240px!important}
+@media(max-width:1090px){.v6-cars-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.v6-car-detail-layout{grid-template-columns:minmax(0,1.4fr) minmax(270px,.9fr)}}
+@media(max-width:720px){
+ .v6-cars-container{padding:0 13px}.v6-cars-header{min-height:79px}
+ .v6-cars-mark .brand img{width:34px;height:34px}.v6-cars-mark .brand strong{font-size:17px}
+ .v6-cars-mark .brand>div span:last-child{font-size:9px}
+ .v6-cars-word{font-size:15px;letter-spacing:2.1px}.v6-cars-brand{gap:9px}
+ .v6-cars-brand-divider{height:24px}.v6-cars-admin{font-size:10px;padding:8px}
+ .v6-cars-nav{gap:15px;overflow-x:auto;flex-wrap:nowrap;white-space:nowrap}
+ .v6-cars-hero{min-height:315px;padding:34px 25px}.v6-cars-hero h1{font-size:46px}
+ .v6-cars-filters{grid-template-columns:1fr 1fr}.v6-cars-filters label:first-child{grid-column:1/-1}
+ .v6-car-detail-layout{grid-template-columns:1fr}.v6-car-details-box{position:static}
+ .v6-car-detail-title{align-items:start}
+}
+@media(max-width:570px){
+ .v6-cars-grid{grid-template-columns:1fr;gap:15px}
+ .v6-cars-hero{min-height:280px}.v6-cars-hero h1{font-size:39px;letter-spacing:-1.4px}
+ .v6-car-card-title{min-height:auto}.v6-car-card-body{padding:17px}
+ .v6-cars-catalog{padding:30px 0 45px}.v6-cars-catalog-head h2{font-size:22px}
+ .v6-cars-header .brand>div span:last-child{display:none}
+ .v6-car-detail-title{display:block}
+ .v6-car-detail-title>div:last-child{text-align:left;margin-top:19px}
+ .v6-car-photo-panel .og-gallery-slide{height:300px}
+ .v6-car-info,.v6-car-details-box{padding:18px}
+ .v6-car-card-actions{grid-template-columns:1fr 1fr}
+}
