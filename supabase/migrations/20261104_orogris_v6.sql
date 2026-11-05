@@ -36,7 +36,7 @@ CREATE POLICY og_rentals_owner_manage ON public.og_rentals FOR ALL TO authentica
 DROP VIEW IF EXISTS public.og_rentals_public;
 CREATE OR REPLACE FUNCTION public.og_public_rentals()
 RETURNS TABLE(id uuid,owner_id uuid,title text,city text,description text,photos jsonb,rental_mode text,nightly_rate numeric,weekend_rate numeric,monthly_rate numeric)
-LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
  SELECT r.id,r.owner_id,r.title,r.city,r.description,r.photos,r.rental_mode,r.nightly_rate,r.weekend_rate,r.monthly_rate
  FROM public.og_rentals r WHERE r.published AND r.active
 $$;
@@ -64,10 +64,11 @@ CREATE UNIQUE INDEX IF NOT EXISTS og_reservation_duplicate_idx ON public.og_rese
 ALTER TABLE public.og_reservations ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS og_reservations_owner_manage ON public.og_reservations;
 CREATE POLICY og_reservations_owner_manage ON public.og_reservations FOR ALL TO authenticated
- USING (owner_id=auth.uid()) WITH CHECK (owner_id=auth.uid());
+ USING (owner_id=auth.uid() AND EXISTS (SELECT 1 FROM public.og_rentals r WHERE r.id=rental_id AND r.owner_id=auth.uid()))
+ WITH CHECK (owner_id=auth.uid() AND EXISTS (SELECT 1 FROM public.og_rentals r WHERE r.id=rental_id AND r.owner_id=auth.uid()));
 -- Verifica una solicitud sin exponer nombres, contratos ni pagos de propietarios.
 CREATE OR REPLACE FUNCTION public.og_can_request_rental(p_rental uuid,p_owner uuid)
-RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
+RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path='' AS $$
  SELECT EXISTS(SELECT 1 FROM public.og_rentals r WHERE r.id=p_rental AND r.owner_id=p_owner AND r.published AND r.active)
 $$;
 REVOKE ALL ON FUNCTION public.og_can_request_rental(uuid,uuid) FROM PUBLIC;
@@ -81,7 +82,7 @@ CREATE POLICY og_reservations_public_insert ON public.og_reservations FOR INSERT
  );
 -- Consulta pública de fechas ocupadas SIN información personal del huésped.
 CREATE OR REPLACE FUNCTION public.og_unavailable_periods(p_rental uuid)
-RETURNS TABLE(check_in date,check_out date) LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
+RETURNS TABLE(check_in date,check_out date) LANGUAGE sql STABLE SECURITY DEFINER SET search_path='' AS $$
  SELECT b.check_in,b.check_out FROM public.og_reservations b
  WHERE b.rental_id=p_rental AND b.status='confirmada' AND b.check_out>=CURRENT_DATE
    AND public.og_can_request_rental(b.rental_id,b.owner_id)
@@ -115,8 +116,9 @@ CREATE INDEX IF NOT EXISTS og_rent_payments_owner_idx ON public.og_rent_payments
 ALTER TABLE public.og_rent_payments ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS og_rent_payments_owner_manage ON public.og_rent_payments;
 CREATE POLICY og_rent_payments_owner_manage ON public.og_rent_payments FOR ALL TO authenticated
- USING (owner_id=auth.uid()) WITH CHECK (owner_id=auth.uid() AND EXISTS (SELECT 1 FROM public.og_rentals r WHERE r.id=rental_id AND r.owner_id=auth.uid()));
-
+ USING (owner_id=auth.uid() AND EXISTS (SELECT 1 FROM public.og_rentals r WHERE r.id=rental_id AND r.owner_id=auth.uid()))
+ WITH CHECK (owner_id=auth.uid() AND EXISTS (SELECT 1 FROM public.og_rentals r WHERE r.id=rental_id AND r.owner_id=auth.uid()));
+ 
 CREATE TABLE IF NOT EXISTS public.og_vehicles (
  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
  owner_id uuid NOT NULL DEFAULT auth.uid(),
@@ -146,7 +148,7 @@ CREATE POLICY og_vehicles_owner_manage ON public.og_vehicles FOR ALL TO authenti
 -- Igual que arriendos: la lectura pública de vehículos usa RPC de columnas explícitas.
 CREATE OR REPLACE FUNCTION public.og_public_vehicles()
 RETURNS TABLE(id uuid,owner_id uuid,title text,brand text,model text,version text,transmission text,fuel text,color text,engine text,year integer,mileage integer,price numeric,city text,description text,photos jsonb)
-LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
  SELECT v.id,v.owner_id,v.title,v.brand,v.model,v.version,v.transmission,v.fuel,v.color,v.engine,v.year,v.mileage,v.price,v.city,v.description,v.photos
  FROM public.og_vehicles v WHERE v.published
 $$;
@@ -200,7 +202,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON public.og_mortgage_content TO authenticated
 -- El visitante solamente puede consultar el título y el texto publicados.
 CREATE OR REPLACE FUNCTION public.og_public_mortgage_content()
 RETURNS TABLE(title text, body text)
-LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path='' AS $$
  SELECT m.title,m.body FROM public.og_mortgage_content m
  WHERE m.published=true AND char_length(trim(m.body)) > 0
  ORDER BY m.updated_at DESC LIMIT 1
