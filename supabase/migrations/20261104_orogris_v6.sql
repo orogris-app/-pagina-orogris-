@@ -67,9 +67,9 @@ CREATE POLICY og_reservations_owner_manage ON public.og_reservations FOR ALL TO 
  USING (owner_id=auth.uid()) WITH CHECK (owner_id=auth.uid());
 -- Verifica una solicitud sin exponer nombres, contratos ni pagos de propietarios.
 CREATE OR REPLACE FUNCTION public.og_can_request_rental(p_rental uuid,p_owner uuid)
-RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $
+RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
  SELECT EXISTS(SELECT 1 FROM public.og_rentals r WHERE r.id=p_rental AND r.owner_id=p_owner AND r.published AND r.active)
-$;
+$$;
 REVOKE ALL ON FUNCTION public.og_can_request_rental(uuid,uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.og_can_request_rental(uuid,uuid) TO anon,authenticated;
 
@@ -81,11 +81,11 @@ CREATE POLICY og_reservations_public_insert ON public.og_reservations FOR INSERT
  );
 -- Consulta pública de fechas ocupadas SIN información personal del huésped.
 CREATE OR REPLACE FUNCTION public.og_unavailable_periods(p_rental uuid)
-RETURNS TABLE(check_in date,check_out date) LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $
+RETURNS TABLE(check_in date,check_out date) LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
  SELECT b.check_in,b.check_out FROM public.og_reservations b
  WHERE b.rental_id=p_rental AND b.status='confirmada' AND b.check_out>=CURRENT_DATE
    AND public.og_can_request_rental(b.rental_id,b.owner_id)
-$;
+$$;
 REVOKE ALL ON FUNCTION public.og_unavailable_periods(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.og_unavailable_periods(uuid) TO anon,authenticated;
 
