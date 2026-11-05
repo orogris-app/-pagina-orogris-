@@ -148,3 +148,6 @@
  .v6-car-info,.v6-car-details-box{padding:18px}
  .v6-car-card-actions{grid-template-columns:1fr 1fr}
 }
+
+.v6-cars-demo-banner{margin:20px 0 -8px;padding:13px 16px;border:1px solid #d9b263;border-radius:10px;background:#3b3222;color:#f7e2b4;font-size:12px;line-height:1.6}
+.v6-cars-demo-only{padding:13px;background:#2a3036;border:1px dashed #a98a53;color:#f3dda9;border-radius:9px;font-size:12px}
