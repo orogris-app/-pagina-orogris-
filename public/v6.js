@@ -1,6 +1,7 @@
 'use strict';
 // OROGRIS V6: módulos independientes. Sin dependencias ni servicios de pago.
 let v6Rentals=[],v6Reservations=[],v6Payments=[],v6Vehicles=[],v6Visits=[];
+let v6Mortgage=null;
 let v6RentalData=[],v6VehicleData=[],v6Unavailable=[];
 let v6RentalEditing='',v6VehicleEditing='',v6Loaded={},v6LoadError='',v6Loading=false;
 let v6RentalFiles=[],v6VehicleFiles=[],v6CalendarRental='',v6CalendarOffset=0;
@@ -28,13 +29,16 @@ async function v6LoadAdmin(which='rentals'){
     sb('/rest/v1/og_rent_payments?owner_id=eq.'+owner+'&select=*&order=created_at.desc')
    ]);
   }else if(which==='vehicles')v6Vehicles=await sb('/rest/v1/og_vehicles?owner_id=eq.'+owner+'&select=*&order=created_at.desc');
-  else if(which==='stats'){
+  else if(which==='mortgages'){
+   const rows=await sb('/rest/v1/og_mortgage_content?owner_id=eq.'+owner+'&select=title,body,published,updated_at&limit=1');
+   v6Mortgage=rows[0]||null;
+  }else if(which==='stats'){
    const date=new Date(Date.now()-30*86400000).toISOString().slice(0,10);
    v6Visits=await sb('/rest/v1/og_visits?owner_id=eq.'+owner+'&visit_day=gte.'+date+'&select=page_type,property_id,visitor_key,visit_day&order=visit_day.desc&limit=5000');
   }
   v6Loaded[which]=true;
  }catch(e){v6Loaded[which]=false;v6LoadError=e.message||String(e)}
- finally{v6Loading=false;if(['rentals','vehicles','stats'].includes(tab))render()}
+ finally{v6Loading=false;if(['rentals','vehicles','stats','mortgages'].includes(tab))render()}
 }
 function v6CalendarView(){
  const r=v6Rentals.find(x=>x.id===v6CalendarRental)||v6Rentals[0];if(!r)return '';
@@ -100,10 +104,55 @@ async function v6PublicVehicles(){
  try{v6VehicleData=await v6PublicRequest('/rest/v1/rpc/og_public_vehicles',{method:'POST',body:'{}'});$('#v6VehicleCards').innerHTML=v6VehicleData.length?v6VehicleData.map(v6PublicVehicleCard).join(''):'<p class="muted">Pronto publicaremos vehículos disponibles.</p>'; const owner=v6VehicleData[0]?.owner_id; if(owner)v6TrackVisit('vehiculos',null,owner)}
  catch{$('#v6VehicleCards').innerHTML='<div class="tip info">La sección de vehículos está en preparación.</div>'}
 }
+function v6MortgageAdminView(){
+ const title=v6Mortgage?.title||'¿Cómo funcionan las hipotecas?';
+ const body=v6Mortgage?.body||'';
+ return headline('Hipotecas','Escribe la información que verán tus clientes en la página web',
+  '<a class="btn" href="?section=hipotecas" target="_blank" rel="noopener noreferrer">Ver página pública</a>')
+ +v6Notice()+v6ErrorMarkup()
+ +'<section class="section"><div class="section-heading"><div><h2>Texto de hipotecas</h2><p>Puedes modificarlo siempre que lo necesites.</p></div></div>'
+ +'<form id="v6MortgageForm"><div class="form-field"><label>Título para el cliente</label><input class="field" id="v6MortgageTitle" maxlength="150" required value="'+esc(title)+'" placeholder="Cómo funcionan las hipotecas"></div>'
+ +'<div class="form-field"><label>Explicación del proceso, tasas, condiciones y requisitos</label><textarea class="field v6-mortgage-editor" id="v6MortgageBody" maxlength="15000" rows="15" required placeholder="Escribe aquí cómo funciona tu servicio de hipotecas, cómo se calculan los intereses, requisitos y pasos a seguir...">'+esc(body)+'</textarea><small>Máximo 15.000 caracteres. Los saltos de línea aparecerán en la publicación. No debes adjuntar archivos.</small></div>'
+ +'<label class="v6-check"><input id="v6MortgagePublished" type="checkbox" '+(v6Mortgage?.published?'checked':'')+'> Mostrar mi explicación de hipotecas a los visitantes</label>'
+ +'<div class="form-toolbar"><button class="btn gold" type="submit" '+(backend!=='cloud'?'disabled':'')+'>Guardar explicación</button></div></form>'
+ +'<p class="muted" style="margin-top:15px">Los clientes podrán leer tu explicación y contactarte por WhatsApp. No hay formularios de carga de documentos.</p></section>';
+}
+async function v6SaveMortgage(e){
+ e.preventDefault();
+ if(backend!=='cloud')return toast('Ingresa a Supabase para publicar la explicación');
+ const title=$('#v6MortgageTitle')?.value.trim()||'',body=$('#v6MortgageBody')?.value.trim()||'',published=!!$('#v6MortgagePublished')?.checked;
+ if(title.length<3||body.length<10)return toast('Escribe un título y una explicación de al menos 10 caracteres.');
+ const btn=e.target.querySelector('button[type=submit]');if(btn)btn.disabled=true;
+ try{
+  if(!await refreshSession())throw Error('Vuelve a iniciar sesión');
+  const payload={owner_id:v6Owner(),title,body,published,updated_at:new Date().toISOString()};
+  await sb('/rest/v1/og_mortgage_content?on_conflict=owner_id',{
+    method:'POST',
+    headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+    body:JSON.stringify(payload)
+  });
+  v6Mortgage={title,body,published};toast('Explicación guardada correctamente');
+  render();
+ }catch(err){toast('No fue posible guardar: '+err.message)}
+ finally{if(btn)btn.disabled=false}
+}
 async function v6PublicMortgages(){
  document.title='OROGRIS | Hipotecas';
- $('#shell').innerHTML=v6PublicWrap('Hipotecas sobre inmuebles','Conoce cómo funciona una financiación respaldada por una propiedad.','<section class="section"><h2>¿Cómo funciona una hipoteca?</h2><p>Una hipoteca es una garantía real sobre un inmueble que respalda el cumplimiento de una obligación. La tasa de interés, el plazo y las condiciones dependen de quién otorgue la financiación y del contrato.</p><h3>Proceso orientativo</h3><p>1. Consulta inicial y capacidad de pago. 2. Revisión de la propiedad y estudio de títulos. 3. Cotización y verificación de condiciones. 4. Formalización mediante escritura y registro cuando corresponda. 5. Desembolso según el acuerdo.</p><div class="tip info">El formulario de documentos PDF y fotos se habilitará cuando dispongamos de almacenamiento privado y autorizaciones de tratamiento de datos. Por seguridad no solicitamos documentos sensibles desde esta página todavía.</div><a class="btn green" href="https://wa.me/'+String(config.contactWhatsapp||'').replace(/\D/g,'')+'?text='+encodeURIComponent('Hola Orogris, quiero conocer el proceso de hipoteca sobre mi inmueble.')+'" target="_blank" rel="noopener noreferrer">Preguntar por WhatsApp</a></section>');
+ const whatsapp='https://wa.me/'+String(config.contactWhatsapp||'').replace(/\D/g,'')+'?text='+encodeURIComponent('Hola Orogris, quiero información sobre hipotecas.');
+ const contact='<p style="margin-top:20px"><a class="btn green" href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a></p>';
+ $('#shell').innerHTML=v6PublicWrap('Hipotecas sobre inmuebles','Conoce nuestro servicio y contáctanos para resolver tus inquietudes.',
+ '<section class="section" id="v6MortgagePublic"><p class="muted">Cargando información sobre hipotecas...</p></section>');
+ try{
+  const rows=await v6PublicRequest('/rest/v1/rpc/og_public_mortgage_content',{method:'POST',body:'{}'});
+  const item=Array.isArray(rows)?rows[0]:null;
+  $('#v6MortgagePublic').innerHTML=(item?.body
+   ?'<h2>'+esc(item.title||'¿Cómo funcionan las hipotecas?')+'</h2><div class="v6-mortgage-body">'+esc(item.body)+'</div><p class="muted">La información es orientativa; las condiciones definitivas se acuerdan según cada caso.</p>'
+   :'<h2>Hipotecas en Orogris</h2><p>Para conocer cómo funciona el proceso y las condiciones aplicables a tu caso, comunícate con nosotros.</p>')+contact;
+ }catch{
+  $('#v6MortgagePublic').innerHTML='<h2>Hipotecas en Orogris</h2><p>La información detallada estará disponible próximamente. Si deseas resolver tus dudas, contáctanos.</p>'+contact;
+ }
 }
+
 async function v6TrackVisit(page_type,property_id=null,owner_id=null){
  try{
   if(!owner_id||!crypto?.randomUUID)return;
@@ -177,4 +226,5 @@ document.addEventListener('submit',e=>{
  if(e.target.id==='v6PaymentForm')v6SubmitPayment(e);
  if(e.target.id==='v6VehicleForm')v6SubmitVehicle(e);
  if(e.target.id==='v6BookingForm')v6SubmitBooking(e);
+ if(e.target.id==='v6MortgageForm')v6SaveMortgage(e);
 });
