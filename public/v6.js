@@ -70,7 +70,7 @@ function v6RentalAdminView(){
 }
 function v6VehicleAdminView(){
  const e=v6Vehicles.find(v=>v.id===v6VehicleEditing);
- return headline('Vehículos','Publica vehículos en venta de forma independiente', '<button class="btn" data-action="v6reload">Actualizar</button>')+v6Notice()+v6ErrorMarkup()+'<section class="section"><h2>'+(e?'Editar vehículo':'Nuevo vehículo')+'</h2><form id="v6VehicleForm"><div class="two-col"><div class="form-field"><label>Título *</label><input class="field" id="v6VTitle" required value="'+esc(e?.title||'')+'" placeholder="Mazda 3 Grand Touring"></div><div class="form-field"><label>Marca</label><input class="field" id="v6VBrand" value="'+esc(e?.brand||'')+'"></div><div class="form-field"><label>Modelo / referencia</label><input class="field" id="v6VModel" value="'+esc(e?.model||'')+'"></div><div class="form-field"><label>Año</label><input class="field" type="number" min="1950" max="2100" id="v6VYear" value="'+esc(e?.year??'')+'"></div><div class="form-field"><label>Kilometraje</label><input class="field" type="number" min="0" id="v6VMileage" value="'+esc(e?.mileage??'')+'"></div><div class="form-field"><label>Precio (COP)</label><input class="field" type="number" min="0" id="v6VPrice" value="'+esc(e?.price??'')+'"></div><div class="form-field"><label>Municipio</label><input class="field" id="v6VCity" value="'+esc(e?.city||'')+'"></div></div><div class="form-field"><label>Descripción</label><textarea class="field" id="v6VDesc" rows="3">'+esc(e?.description||'')+'</textarea></div><div class="form-field"><label>Fotografías del vehículo</label><input class="field" type="file" accept="image/*" multiple id="v6VehicleFiles"><small>Selecciona varias fotos desde el celular.</small><span id="v6VehicleFilesCount" class="muted"></span></div><div class="form-field"><label>URLs de fotos públicas, una por línea (opcional)</label><textarea class="field" id="v6VPhotos" rows="2" placeholder="https://...">'+esc((e?.photos||[]).join('\n'))+'</textarea></div><label><input type="checkbox" id="v6VPublished" '+(e?.published?'checked':'')+'> Publicar vehículo</label><div class="form-toolbar"><button class="btn gold" type="submit" '+(backend!=='cloud'?'disabled':'')+'>Guardar vehículo</button>'+(e?'<button class="btn" data-action="v6cancelVehicle" type="button">Cancelar</button>':'')+'</div></form></section><section class="section"><h2>Inventario de vehículos</h2>'+(v6Vehicles.length?'<div class="v6-list">'+v6Vehicles.map(v=>'<article class="v6-item"><div><b>'+esc(v.title)+'</b><div class="muted">'+esc(v.year||'')+' · '+esc(v.mileage||0)+' km · '+(v.published?'Publicado':'Borrador')+'</div><strong>'+v6Money(v.price)+'</strong></div><button class="btn small" data-v6-edit-vehicle="'+esc(v.id)+'">Editar</button></article>').join('')+'</div>':'<p class="muted">Aún no tienes vehículos registrados.</p>')+'</section>';
+ return headline('OROGRIS CARS','Administra tu vitrina automotriz y comparte fichas con tu marca', '<button class="btn" data-action="v6reload">Actualizar</button>')+v6Notice()+v6ErrorMarkup()+'<section class="section"><h2>'+(e?'Editar vehículo':'Nuevo vehículo')+'</h2><form id="v6VehicleForm"><div class="two-col"><div class="form-field"><label>Título *</label><input class="field" id="v6VTitle" required value="'+esc(e?.title||'')+'" placeholder="Mazda 3 Grand Touring"></div><div class="form-field"><label>Marca</label><input class="field" id="v6VBrand" value="'+esc(e?.brand||'')+'"></div><div class="form-field"><label>Modelo / referencia</label><input class="field" id="v6VModel" value="'+esc(e?.model||'')+'"></div><div class="form-field"><label>Versión</label><input class="field" id="v6VVersion" value="'+esc(e?.version||'')+'" placeholder="Grand Touring, Signature..."></div><div class="form-field"><label>Transmisión</label><select class="field" id="v6VTransmission"><option value="">Por definir</option>'+["Automática","Mecánica","CVT","Otra"].map(x=>'<option value="'+esc(x)+'" '+(e?.transmission===x?'selected':'')+'>'+esc(x)+'</option>').join('')+'</select></div><div class="form-field"><label>Combustible</label><select class="field" id="v6VFuel"><option value="">Por definir</option>'+["Gasolina","Diésel","Híbrido","Eléctrico","Gas","Otro"].map(x=>'<option value="'+esc(x)+'" '+(e?.fuel===x?'selected':'')+'>'+esc(x)+'</option>').join('')+'</select></div><div class="form-field"><label>Color</label><input class="field" id="v6VColor" value="'+esc(e?.color||'')+'"></div><div class="form-field"><label>Motor / cilindraje</label><input class="field" id="v6VEngine" value="'+esc(e?.engine||'')+'" placeholder="2.0 L"></div><div class="form-field"><label>Año</label><input class="field" type="number" min="1950" max="2100" id="v6VYear" value="'+esc(e?.year??'')+'"></div><div class="form-field"><label>Kilometraje</label><input class="field" type="number" min="0" id="v6VMileage" value="'+esc(e?.mileage??'')+'"></div><div class="form-field"><label>Precio (COP)</label><input class="field" type="number" min="0" id="v6VPrice" value="'+esc(e?.price??'')+'"></div><div class="form-field"><label>Municipio</label><input class="field" id="v6VCity" value="'+esc(e?.city||'')+'"></div></div><div class="form-field"><label>Descripción</label><textarea class="field" id="v6VDesc" rows="3">'+esc(e?.description||'')+'</textarea></div><div class="form-field"><label>Fotografías del vehículo</label><input class="field" type="file" accept="image/*" multiple id="v6VehicleFiles"><small>Selecciona varias fotos desde el celular.</small><span id="v6VehicleFilesCount" class="muted"></span></div><div class="form-field"><label>URLs de fotos públicas, una por línea (opcional)</label><textarea class="field" id="v6VPhotos" rows="2" placeholder="https://...">'+esc((e?.photos||[]).join('\n'))+'</textarea></div><label><input type="checkbox" id="v6VPublished" '+(e?.published?'checked':'')+'> Publicar vehículo</label><div class="form-toolbar"><button class="btn gold" type="submit" '+(backend!=='cloud'?'disabled':'')+'>Guardar vehículo</button>'+(e?'<button class="btn" data-action="v6cancelVehicle" type="button">Cancelar</button>':'')+'</div></form></section><section class="section"><h2>Inventario de vehículos</h2>'+(v6Vehicles.length?'<div class="v6-list">'+v6Vehicles.map(v=>'<article class="v6-item"><div><b>'+esc(v.title)+'</b><div class="muted">'+esc(v.year||'')+' · '+esc(v.mileage||0)+' km · '+(v.published?'Publicado':'Borrador')+'</div><strong>'+v6Money(v.price)+'</strong></div><div class="quick"><button class="btn small" data-v6-edit-vehicle="'+esc(v.id)+'">Editar</button>'+(v.published?'<a class="btn small black" href="./?section=vehiculos&car='+encodeURIComponent(v.id)+'" target="_blank" rel="noopener noreferrer">Ver ficha OROGRIS CARS</a>':'')+'</div></article>').join('')+'</div>':'<p class="muted">Aún no tienes vehículos registrados.</p>')+'</section>';
 }
 function v6StatsView(){
  const unique=new Set(v6Visits.filter(v=>v.page_type==='catalogo').map(v=>v.visitor_key+'|'+v.visit_day)).size;
@@ -94,48 +94,78 @@ async function v6PublicRentals(){
 function v6BookingForm(r){
  return '<section class="section v6-booking"><div class="section-heading"><div><h2>Solicitar fechas: '+esc(r.title)+'</h2><p>Esta solicitud no confirma ni bloquea las fechas.</p></div><button class="btn small" type="button" data-action="v6closeBooking">Cerrar</button></div><div class="tip info" id="v6BusyDates">Consultando fechas ocupadas...</div><form id="v6BookingForm"><input type="hidden" id="v6BookingRental" value="'+esc(r.id)+'"><div class="two-col"><div class="form-field"><label>Entrada *</label><input class="field" type="date" id="v6CheckIn" required min="'+new Date().toISOString().slice(0,10)+'"></div><div class="form-field"><label>Salida *</label><input class="field" type="date" id="v6CheckOut" required></div><div class="form-field"><label>Nombre *</label><input class="field" id="v6GuestName" required minlength="2" maxlength="120"></div><div class="form-field"><label>Celular *</label><input class="field" id="v6GuestPhone" type="tel" required minlength="7" maxlength="25"></div></div><label class="v6-check"><input id="v6Consent" type="checkbox" required> Autorizo que Orogris use mis datos para contactarme sobre esta solicitud. Entiendo que no hay reserva confirmada.</label><button class="btn green" type="submit">Enviar solicitud y abrir WhatsApp</button><p class="muted" style="margin-top:10px">No pagues anticipos sin confirmar personalmente las condiciones.</p></form></section>';
 }
+function v6CarLogo(){
+ return '<div class="v6-cars-brand"><div class="v6-cars-mark">'+brand()+'</div><span class="v6-cars-brand-divider"></span><span class="v6-cars-word">CARS</span></div>';
+}
+function v6CarsShell(content){
+ return '<div class="v6-cars-page"><div class="v6-cars-container"><header class="v6-cars-header">'+v6CarLogo()+'<a href="?admin=1" class="v6-cars-admin">Administración</a></header><nav class="v6-cars-nav"><a href="./">Inmuebles</a><a href="?section=arriendos">Arriendos</a><a class="active" aria-current="page" href="?section=vehiculos">Orogris Cars</a><a href="?section=hipotecas">Hipotecas</a></nav>'+content+'<footer class="v6-cars-footer">OROGRIS CARS · Vehículos en venta · Colombia</footer></div></div>';
+}
+function v6CarsWhatsApp(v){
+ return 'https://wa.me/573015904303?text='+encodeURIComponent('Hola, vi en OROGRIS CARS el vehículo '+v.title+(v.year?' ('+v.year+')':'')+'. Quisiera más información y agendar una visita.');
+}
+function v6CarValue(v){return v===null||v===undefined||v===''?'Por consultar':esc(v)}
+function v6CarMileage(v){return v===null||v===undefined||v===''?'Por consultar':new Intl.NumberFormat('es-CO').format(Number(v))+' km'}
+function v6CarSpec(label,val){
+ if(val===null||val===undefined||val==='')return '';
+ return '<div class="v6-car-spec"><small>'+esc(label)+'</small><strong>'+esc(val)+'</strong></div>';
+}
 function v6PublicVehicleCard(v){
- const img=v6SafePhoto(v);
- return '<article class="property"><div class="cover">'+(img?'<img src="'+esc(img)+'" alt="'+esc(v.title)+'" loading="lazy">':'<div class="placeholder">Sin foto</div>')+'</div><div class="property-content"><h3>'+esc(v.title)+'</h3><div class="muted">'+esc(v.year||'')+' · '+esc(v.mileage??'')+' km · '+esc(v.city||'')+'</div><div class="price">'+v6Money(v.price)+'</div><p>'+esc(v.description||'')+'</p><a class="btn green" target="_blank" rel="noopener noreferrer" href="https://wa.me/'+String(config.contactWhatsapp||'').replace(/\D/g,'')+'?text='+encodeURIComponent('Hola, vi en Orogris el vehículo '+v.title+'. Quisiera más información.')+'">Consultar por WhatsApp</a></div></article>';
+ const img=v6SafePhoto(v),href='?section=vehiculos&car='+encodeURIComponent(v.id);
+ const basics=[v.year?v6CarSpec('Modelo',v.year):'',v.mileage!==null&&v.mileage!==undefined?v6CarSpec('Recorrido',v6CarMileage(v.mileage)):'',v.transmission?v6CarSpec('Caja',v.transmission):''].filter(Boolean).join('');
+ return '<article class="v6-car-card"><a class="v6-car-photo" href="'+esc(href)+'" aria-label="Ver '+esc(v.title)+'">'+(img?'<img src="'+esc(img)+'" alt="'+esc(v.title)+'" loading="lazy">':'<div class="v6-car-no-photo">OROGRIS <span>CARS</span></div>')+'<span class="v6-car-chip">OROGRIS CARS</span></a><div class="v6-car-card-body"><span class="v6-cars-overline">'+esc([v.brand,v.city].filter(Boolean).join(' · ')||'Vehículo disponible')+'</span><a class="v6-car-card-title" href="'+esc(href)+'">'+esc(v.title)+'</a><p class="v6-car-card-price">'+v6Money(v.price)+'</p><div class="v6-car-card-specs">'+basics+'</div><div class="v6-car-card-actions"><a class="v6-cars-button" href="'+esc(href)+'">Ver ficha completa</a><a class="v6-cars-ghost" href="'+esc(v6CarsWhatsApp(v))+'" target="_blank" rel="noopener noreferrer">WhatsApp</a></div></div></article>';
+}
+function v6CarsFiltered(){
+ const search=norm(document.getElementById('v6CarsSearch')?.value||'');
+ const brand=document.getElementById('v6CarsBrand')?.value||'';
+ const max=Number(document.getElementById('v6CarsMax')?.value||0);
+ return v6VehicleData.filter(v=>{
+  if(brand&&v.brand!==brand)return false;
+  if(max&&(!v.price||Number(v.price)>max*1e6))return false;
+  return !search||norm([v.title,v.brand,v.model,v.version,v.year,v.city,v.fuel,v.transmission].filter(Boolean).join(' ')).includes(search);
+ });
+}
+function v6CarsDraw(){
+ const target=document.getElementById('v6VehicleCards');if(!target)return;
+ const shown=v6CarsFiltered();
+ target.innerHTML=shown.length?shown.map(v6PublicVehicleCard).join(''):'<div class="v6-cars-empty">No encontramos vehículos con esos filtros. Puedes modificarlos y buscar de nuevo.</div>';
+ const counter=document.getElementById('v6CarsCount');if(counter)counter.textContent=shown.length+' vehículos';
+}
+function v6CarDetails(v){
+ const photos=Array.isArray(v.photos)?v.photos.filter(x=>typeof x==='string'&&/^https:\/\//.test(x)):[];
+ const specs=[
+  ['Marca',v.brand],['Referencia',v.model],['Versión',v.version],
+  ['Año',v.year],['Kilometraje',v.mileage!==null&&v.mileage!==undefined?v6CarMileage(v.mileage):''],
+  ['Transmisión',v.transmission],['Combustible',v.fuel],['Color',v.color],['Motor',v.engine],['Ciudad',v.city]
+ ].map(([label,val])=>v6CarSpec(label,val)).join('');
+ const whatsapp=v6CarsWhatsApp(v);
+ return '<div class="v6-car-detail"><div class="v6-car-breadcrumb"><a href="?section=vehiculos">OROGRIS CARS</a><span> / </span>'+esc(v.title)+'</div><div class="v6-car-detail-title"><div><span class="v6-cars-overline">Vehículo disponible · OROGRIS CARS</span><h1>'+esc(v.title)+'</h1><p>'+esc([v.brand,v.version,v.city].filter(Boolean).join(' · '))+'</p></div><div><small>PRECIO DE VENTA</small><strong>'+v6Money(v.price)+'</strong></div></div>'
+  +'<div class="v6-car-detail-layout"><div class="v6-car-photo-panel">'+(photos.length?ogGalleryMarkup(photos):'<div class="v6-car-no-photo v6-car-detail-empty">OROGRIS <span>CARS</span></div>')+'<section class="v6-car-info"><h2>Descripción</h2><p>'+esc(v.description||'Comunícate con nuestro equipo para conocer más detalles de este vehículo.')+'</p></section></div>'
+  +'<aside class="v6-car-detail-aside"><div class="v6-car-details-box"><h2>Ficha técnica</h2><div class="v6-car-detail-specs">'+specs+'</div><div class="v6-car-cta"><a href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer" class="v6-cars-button v6-cars-button-wide">Consultar por WhatsApp Business</a><small>301 590 4303 · Atención personalizada</small></div></div><div class="v6-car-disclaimer">Disponibilidad y condiciones sujetas a confirmación. La información publicada debe verificarse antes de la negociación.</div></aside></div>'
+  +'<div class="v6-car-bottom-actions"><a class="v6-cars-ghost" href="?section=vehiculos">Ver todos los vehículos</a><a class="v6-cars-button" href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer">Agendar visita</a></div></div>';
 }
 async function v6PublicVehicles(){
- document.title='OROGRIS | Vehículos';
- $('#shell').innerHTML=v6PublicWrap('Vehículos en venta','Encuentra vehículos disponibles y conversa con Orogris por WhatsApp.','<section class="catalogue-grid" id="v6VehicleCards"><div class="empty">Cargando vehículos...</div></section>');
- try{v6VehicleData=await v6PublicRequest('/rest/v1/rpc/og_public_vehicles',{method:'POST',body:'{}'});$('#v6VehicleCards').innerHTML=v6VehicleData.length?v6VehicleData.map(v6PublicVehicleCard).join(''):'<p class="muted">Pronto publicaremos vehículos disponibles.</p>'; const owner=v6VehicleData[0]?.owner_id; if(owner)v6TrackVisit('vehiculos',null,owner)}
- catch{$('#v6VehicleCards').innerHTML='<div class="tip info">La sección de vehículos está en preparación.</div>'}
-}
-function v6MortgageAdminView(){
- const title=v6Mortgage?.title||'¿Cómo funcionan las hipotecas?';
- const body=v6Mortgage?.body||'';
- return headline('Hipotecas','Escribe la información que verán tus clientes en la página web',
-  '<a class="btn" href="?section=hipotecas" target="_blank" rel="noopener noreferrer">Ver página pública</a>')
- +v6Notice()+v6ErrorMarkup()
- +'<section class="section"><div class="section-heading"><div><h2>Texto de hipotecas</h2><p>Puedes modificarlo siempre que lo necesites.</p></div></div>'
- +'<form id="v6MortgageForm"><div class="form-field"><label>Título para el cliente</label><input class="field" id="v6MortgageTitle" maxlength="150" required value="'+esc(title)+'" placeholder="Cómo funcionan las hipotecas"></div>'
- +'<div class="form-field"><label>Explicación del proceso, tasas, condiciones y requisitos</label><textarea class="field v6-mortgage-editor" id="v6MortgageBody" maxlength="15000" rows="15" required placeholder="Escribe aquí cómo funciona tu servicio de hipotecas, cómo se calculan los intereses, requisitos y pasos a seguir...">'+esc(body)+'</textarea><small>Máximo 15.000 caracteres. Los saltos de línea aparecerán en la publicación. No debes adjuntar archivos.</small></div>'
- +'<label class="v6-check"><input id="v6MortgagePublished" type="checkbox" '+(v6Mortgage?.published?'checked':'')+'> Mostrar mi explicación de hipotecas a los visitantes</label>'
- +'<div class="form-toolbar"><button class="btn gold" type="submit" '+(backend!=='cloud'?'disabled':'')+'>Guardar explicación</button></div></form>'
- +'<p class="muted" style="margin-top:15px">Los clientes podrán leer tu explicación y contactarte por WhatsApp. No hay formularios de carga de documentos.</p></section>';
-}
-async function v6SaveMortgage(e){
- e.preventDefault();
- if(backend!=='cloud')return toast('Ingresa a Supabase para publicar la explicación');
- const title=$('#v6MortgageTitle')?.value.trim()||'',body=$('#v6MortgageBody')?.value.trim()||'',published=!!$('#v6MortgagePublished')?.checked;
- if(title.length<3||body.length<10)return toast('Escribe un título y una explicación de al menos 10 caracteres.');
- const btn=e.target.querySelector('button[type=submit]');if(btn)btn.disabled=true;
+ document.title='OROGRIS CARS | Vehículos en venta';
+ const id=new URLSearchParams(location.search).get('car');
+ const content=id?'<div id="v6CarsDetail" class="v6-cars-loading">Consultando la ficha del vehículo...</div>':'<section class="v6-cars-hero"><div class="v6-cars-hero-inner"><span class="v6-cars-overline">LA VITRINA AUTOMOTRIZ DE OROGRIS</span><h1>OROGRIS <em>CARS</em></h1><p>Vehículos seleccionados, información clara y atención directa. Encuentra tu próximo carro y conversemos.</p><a class="v6-cars-button" href="#v6VehicleCards">Explorar vehículos</a></div><div class="v6-cars-hero-accent" aria-hidden="true">CARS</div></section><section class="v6-cars-catalog"><div class="v6-cars-catalog-head"><div><span class="v6-cars-overline">INVENTARIO</span><h2>Vehículos disponibles</h2></div><span id="v6CarsCount" class="v6-cars-counter">Cargando...</span></div><div class="v6-cars-filters"><label>Buscar<input id="v6CarsSearch" type="search" placeholder="Marca, referencia, año o ciudad"></label><label>Marca<select id="v6CarsBrand"><option value="">Todas las marcas</option></select></label><label>Precio máximo (millones)<input type="number" inputmode="numeric" id="v6CarsMax" min="0" placeholder="Ej. 100"></label></div><section class="v6-cars-grid" id="v6VehicleCards"><div class="v6-cars-empty">Cargando vehículos...</div></section></section>';
+ $('#shell').innerHTML=v6CarsShell(content);
  try{
-  if(!await refreshSession())throw Error('Vuelve a iniciar sesión');
-  const payload={owner_id:v6Owner(),title,body,published,updated_at:new Date().toISOString()};
-  await sb('/rest/v1/og_mortgage_content?on_conflict=owner_id',{
-    method:'POST',
-    headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
-    body:JSON.stringify(payload)
-  });
-  v6Mortgage={title,body,published};toast('Explicación guardada correctamente');
-  render();
- }catch(err){toast('No fue posible guardar: '+err.message)}
- finally{if(btn)btn.disabled=false}
+  v6VehicleData=await v6PublicRequest('/rest/v1/rpc/og_public_vehicles',{method:'POST',body:'{}'});
+  if(id){
+   const car=v6VehicleData.find(v=>String(v.id)===id);
+   $('#v6CarsDetail').innerHTML=car?v6CarDetails(car):'<div class="v6-cars-empty">No encontramos esta ficha publicada. <a href="?section=vehiculos">Volver al catálogo</a>.</div>';
+   if(car){document.title=car.title+' | OROGRIS CARS';if(car.owner_id)v6TrackVisit('vehiculos',null,car.owner_id)}
+  }else{
+   const brands=[...new Set(v6VehicleData.map(x=>String(x.brand||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+   $('#v6CarsBrand').innerHTML='<option value="">Todas las marcas</option>'+brands.map(b=>'<option value="'+esc(b)+'">'+esc(b)+'</option>').join('');
+   v6CarsDraw();
+   if(v6VehicleData[0]?.owner_id)v6TrackVisit('vehiculos',null,v6VehicleData[0].owner_id);
+  }
+ }catch{
+  const target=document.getElementById(id?'v6CarsDetail':'v6VehicleCards');
+  if(target)target.innerHTML='<div class="v6-cars-empty">La vitrina está en preparación. Si deseas información, contáctanos directamente por WhatsApp Business.</div>';
+ }
 }
+
 async function v6PublicMortgages(){
  document.title='OROGRIS | Hipotecas';
  const whatsapp='https://wa.me/573015904303?text='+encodeURIComponent('Hola, vi la sección de hipotecas de Orogris y quisiera conocer los requisitos, las tasas de interés y el proceso para hipotecar mi propiedad.');
@@ -184,7 +214,7 @@ async function v6SubmitPayment(e){
 }
 async function v6SubmitVehicle(e){
  e.preventDefault();const old=v6Vehicles.find(v=>v.id===v6VehicleEditing);
- const payload={owner_id:v6Owner(),title:$('#v6VTitle').value.trim(),brand:$('#v6VBrand').value.trim(),model:$('#v6VModel').value.trim(),year:v6MoneyNumber('v6VYear'),mileage:v6MoneyNumber('v6VMileage'),price:v6MoneyNumber('v6VPrice'),city:$('#v6VCity').value.trim(),description:$('#v6VDesc').value.trim(),photos:$('#v6VPhotos').value.split(/\r?\n/).map(v=>v.trim()).filter(v=>/^https:\/\//i.test(v)).slice(0,30),published:$('#v6VPublished').checked,updated_at:new Date().toISOString()};
+ const payload={owner_id:v6Owner(),title:$('#v6VTitle').value.trim(),brand:$('#v6VBrand').value.trim(),model:$('#v6VModel').value.trim(),version:$('#v6VVersion').value.trim(),transmission:$('#v6VTransmission').value,fuel:$('#v6VFuel').value,color:$('#v6VColor').value.trim(),engine:$('#v6VEngine').value.trim(),year:v6MoneyNumber('v6VYear'),mileage:v6MoneyNumber('v6VMileage'),price:v6MoneyNumber('v6VPrice'),city:$('#v6VCity').value.trim(),description:$('#v6VDesc').value.trim(),photos:$('#v6VPhotos').value.split(/\r?\n/).map(v=>v.trim()).filter(v=>/^https:\/\//i.test(v)).slice(0,30),published:$('#v6VPublished').checked,updated_at:new Date().toISOString()};
  try{const id=v6VehicleEditing||crypto.randomUUID();if(!v6VehicleEditing)payload.id=id;if(v6VehicleFiles.length){await refreshSession();const uploaded=[];for(const file of v6VehicleFiles)uploaded.push(await uploadPhoto(await compress(file),id));payload.photos=[...payload.photos,...uploaded].slice(0,30)}await v6Upsert('og_vehicles',payload,v6VehicleEditing);v6VehicleEditing='';v6VehicleFiles=[];toast('Vehículo guardado');await v6LoadAdmin('vehicles')}catch(err){toast('Error: '+err.message)}
 }
 async function v6SubmitBooking(e){
@@ -221,6 +251,8 @@ document.addEventListener('click',e=>{
  if(target.dataset.action==='v6reload')v6LoadAdmin(tab);
 });
 document.addEventListener('change',e=>{if(e.target.id==='v6RentalFiles'){v6RentalFiles=[...e.target.files].slice(0,20);const el=$('#v6RentalFilesCount');if(el)el.textContent=v6RentalFiles.length+' fotos seleccionadas'}if(e.target.id==='v6VehicleFiles'){v6VehicleFiles=[...e.target.files].slice(0,20);const el=$('#v6VehicleFilesCount');if(el)el.textContent=v6VehicleFiles.length+' fotos seleccionadas'}if(e.target.id==='v6CalendarRentalSelector'){v6CalendarRental=e.target.value;render()}});
+document.addEventListener('input',e=>{if(['v6CarsSearch','v6CarsMax'].includes(e.target.id))v6CarsDraw()});
+document.addEventListener('change',e=>{if(e.target.id==='v6CarsBrand')v6CarsDraw()});
 document.addEventListener('submit',e=>{
  if(e.target.id==='v6RentalForm')v6SubmitRental(e);
  if(e.target.id==='v6PaymentForm')v6SubmitPayment(e);
