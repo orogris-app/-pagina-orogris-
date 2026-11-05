@@ -130,7 +130,7 @@ function v6CarsDraw(){
  target.innerHTML=shown.length?shown.map(v6PublicVehicleCard).join(''):'<div class="v6-cars-empty">No encontramos vehículos con esos filtros. Puedes modificarlos y buscar de nuevo.</div>';
  const counter=document.getElementById('v6CarsCount');if(counter)counter.textContent=shown.length+' vehículos';
 }
-function v6CarDetails(v){
+function v6CarDetails(v,demo=false){
  const photos=Array.isArray(v.photos)?v.photos.filter(x=>typeof x==='string'&&/^https:\/\//.test(x)):[];
  const specs=[
   ['Marca',v.brand],['Referencia',v.model],['Versión',v.version],
@@ -138,16 +138,21 @@ function v6CarDetails(v){
   ['Transmisión',v.transmission],['Combustible',v.fuel],['Color',v.color],['Motor',v.engine],['Ciudad',v.city]
  ].map(([label,val])=>v6CarSpec(label,val)).join('');
  const whatsapp=v6CarsWhatsApp(v);
- return '<div class="v6-car-detail"><div class="v6-car-breadcrumb"><a href="?section=vehiculos">OROGRIS CARS</a><span> / </span>'+esc(v.title)+'</div><div class="v6-car-detail-title"><div><span class="v6-cars-overline">Vehículo disponible · OROGRIS CARS</span><h1>'+esc(v.title)+'</h1><p>'+esc([v.brand,v.version,v.city].filter(Boolean).join(' · '))+'</p></div><div><small>PRECIO DE VENTA</small><strong>'+v6Money(v.price)+'</strong></div></div>'
+ const contact=demo?'<div class="v6-cars-demo-only">Aquí aparecerá tu botón de WhatsApp Business cuando publiques un carro.</div>':'<a href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer" class="v6-cars-button v6-cars-button-wide">Consultar por WhatsApp Business</a>';
+ return (demo?'<div class="v6-cars-demo-banner"><b>VISTA DEMOSTRATIVA</b> · Datos ilustrativos. Este vehículo NO está en venta.</div>':'')+'<div class="v6-car-detail"><div class="v6-car-breadcrumb"><a href="?section=vehiculos">OROGRIS CARS</a><span> / </span>'+esc(v.title)+'</div><div class="v6-car-detail-title"><div><span class="v6-cars-overline">Vehículo disponible · OROGRIS CARS</span><h1>'+esc(v.title)+'</h1><p>'+esc([v.brand,v.version,v.city].filter(Boolean).join(' · '))+'</p></div><div><small>PRECIO DE VENTA</small><strong>'+v6Money(v.price)+'</strong></div></div>'
   +'<div class="v6-car-detail-layout"><div class="v6-car-photo-panel">'+(photos.length?ogGalleryMarkup(photos):'<div class="v6-car-no-photo v6-car-detail-empty">OROGRIS <span>CARS</span></div>')+'<section class="v6-car-info"><h2>Descripción</h2><p>'+esc(v.description||'Comunícate con nuestro equipo para conocer más detalles de este vehículo.')+'</p></section></div>'
-  +'<aside class="v6-car-detail-aside"><div class="v6-car-details-box"><h2>Ficha técnica</h2><div class="v6-car-detail-specs">'+specs+'</div><div class="v6-car-cta"><a href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer" class="v6-cars-button v6-cars-button-wide">Consultar por WhatsApp Business</a><small>301 590 4303 · Atención personalizada</small></div></div><div class="v6-car-disclaimer">Disponibilidad y condiciones sujetas a confirmación. La información publicada debe verificarse antes de la negociación.</div></aside></div>'
-  +'<div class="v6-car-bottom-actions"><a class="v6-cars-ghost" href="?section=vehiculos">Ver todos los vehículos</a><a class="v6-cars-button" href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer">Agendar visita</a></div></div>';
+  +'<aside class="v6-car-detail-aside"><div class="v6-car-details-box"><h2>Ficha técnica</h2><div class="v6-car-detail-specs">'+specs+'</div><div class="v6-car-cta">'+contact+'<small>301 590 4303 · Atención personalizada</small></div></div><div class="v6-car-disclaimer">Disponibilidad y condiciones sujetas a confirmación. La información publicada debe verificarse antes de la negociación.</div></aside></div>'
+  +'<div class="v6-car-bottom-actions"><a class="v6-cars-ghost" href="?section=vehiculos">Ver todos los vehículos</a>'+(demo?'':'<a class="v6-cars-button" href="'+esc(whatsapp)+'" target="_blank" rel="noopener noreferrer">Agendar visita</a>')+'</div></div>';
 }
 async function v6PublicVehicles(){
  document.title='OROGRIS CARS | Vehículos en venta';
  const id=new URLSearchParams(location.search).get('car');
  const content=id?'<div id="v6CarsDetail" class="v6-cars-loading">Consultando la ficha del vehículo...</div>':'<section class="v6-cars-hero"><div class="v6-cars-hero-inner"><span class="v6-cars-overline">LA VITRINA AUTOMOTRIZ DE OROGRIS</span><h1>OROGRIS <em>CARS</em></h1><p>Vehículos seleccionados, información clara y atención directa. Encuentra tu próximo carro y conversemos.</p><a class="v6-cars-button" href="#v6VehicleCards">Explorar vehículos</a></div><div class="v6-cars-hero-accent" aria-hidden="true">CARS</div></section><section class="v6-cars-catalog"><div class="v6-cars-catalog-head"><div><span class="v6-cars-overline">INVENTARIO</span><h2>Vehículos disponibles</h2></div><span id="v6CarsCount" class="v6-cars-counter">Cargando...</span></div><div class="v6-cars-filters"><label>Buscar<input id="v6CarsSearch" type="search" placeholder="Marca, referencia, año o ciudad"></label><label>Marca<select id="v6CarsBrand"><option value="">Todas las marcas</option></select></label><label>Precio máximo (millones)<input type="number" inputmode="numeric" id="v6CarsMax" min="0" placeholder="Ej. 100"></label></div><section class="v6-cars-grid" id="v6VehicleCards"><div class="v6-cars-empty">Cargando vehículos...</div></section></section>';
  $('#shell').innerHTML=v6CarsShell(content);
+ if(new URLSearchParams(location.search).get('demo')==='1'){
+  const sample={id:'demo',title:'Vehículo de muestra',brand:'Marca de ejemplo',model:'Referencia de ejemplo',version:'Versión de ejemplo',year:2020,mileage:45000,transmission:'Automática',fuel:'Gasolina',color:'Blanco',engine:'2.0 L',price:85000000,city:'La Ceja',description:'Esta ficha es únicamente una demostración visual de OROGRIS CARS. Los datos y el precio son ilustrativos; no corresponde a un vehículo publicado ni disponible para venta.',photos:[]};
+  $('#shell').innerHTML=v6CarsShell(v6CarDetails(sample,true));document.title='Diseño de prueba | OROGRIS CARS';return;
+ }
  try{
   v6VehicleData=await v6PublicRequest('/rest/v1/rpc/og_public_vehicles',{method:'POST',body:'{}'});
   if(id){
