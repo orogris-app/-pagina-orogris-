@@ -165,3 +165,13 @@
 .v6-mortgage-button{margin:12px auto 0;max-width:100%;display:inline-flex;justify-content:center;background:#177a43;color:#fff;border:0}
 .v6-mortgage-legal{font-size:11px;color:#67746c;line-height:1.7;margin:19px 0 0}
 @media(max-width:600px){.v6-mortgage-section{padding:14px}.v6-mortgage-contact{padding:20px 12px}.v6-mortgage-contact h2{font-size:20px}.v6-mortgage-button{font-size:12px;padding:11px 9px}.v6-mortgage-custom{padding:16px}}
+
+/* OROGRIS: acceso claro al portafolio para WhatsApp y Estados */
+.portfolio-cta{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:24px 0 0;padding:17px 19px;border:1px solid #d8dce2;border-radius:12px;background:#fff;color:#181d26;box-shadow:0 3px 14px rgba(24,29,38,.07)}
+.portfolio-cta b{display:block;color:#20252e;font-weight:800;font-size:17px;letter-spacing:-.25px}
+.portfolio-cta small{display:block;color:#596273;margin-top:5px;line-height:1.6;font-size:13px;max-width:500px}
+.portfolio-cta-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.portfolio-cta-actions .btn.gold{background:#caa04d;border-color:#caa04d;color:#111319}
+.portfolio-cta-actions .btn:not(.gold){background:#111319;color:#fff;border-color:#111319}
+.portfolio-cta-actions .btn{min-height:46px;white-space:normal;text-align:center}
+@media(max-width:760px){.portfolio-cta{padding:15px;align-items:stretch}.portfolio-cta-actions{display:grid;grid-template-columns:1fr;width:100%}.portfolio-cta-actions .btn{width:100%;font-size:13px}}
